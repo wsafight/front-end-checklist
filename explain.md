@@ -9,3 +9,31 @@ add = (a, b) => {
     return a + b;
 }
 ```
+
+- 在需要的地方使用请求，防止请求泛滥
+
+```js
+// 遇到的例子
+...
+const res = await xxx();
+if (isNotVip()) {
+    ...
+    return;
+}
+if (res) {
+    ...doSomeThing
+}
+...
+
+// 修改
+...
+if (isNotVip()) {
+    ...
+    return;
+}
+const res = await xxx();
+if (res) {
+    ...doSomeThing
+}
+...
+```
