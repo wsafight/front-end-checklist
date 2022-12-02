@@ -54,3 +54,17 @@ import makeChocolateChipCookies from "./cookie.js";
 你不知道你的默认导出函数是cookies.js做什么的。当然，您可以查看实现或依靠文档，但这肯定会增加更多的认知负担。您无法正确识别该功能应该做什么。
 
 这迫使您考虑在要使用它的每个地方命名该功能。
+
+- 使用默认参数而不是条件判断
+```js
+// bad
+const createShape = (type) => {
+    const shapeType = type || 'A';
+    ...
+}
+
+// good
+const createShape = (type = 'A') => {
+    ...
+}
+```
