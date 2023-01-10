@@ -65,6 +65,7 @@ Read this in other languages: [English](https://github.com/wsafight/front-end-ch
 - [ ] 注重事物生命周期，严格遵循初始化时候创建，结束前清理
 - [ ] 使用更新的语言特性提升程序健壮性
 - [ ] 单文件添加行数限制(需要由团队自行定制)
+- [ ] 业务功能不要依赖语言特性
 
 ## 待完成
 - [ ] 解析清单意义，解释为什么以及怎样做
