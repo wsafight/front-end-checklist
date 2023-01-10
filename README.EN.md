@@ -62,6 +62,7 @@ In the code of new CR classmates, there are a lot of knowledge and code points t
 - [ ] Pay attention to the life cycle of things, strictly follow the creation at initialization time, and clean up before the end
 - [ ] Improve program robustness with newer language features
 - [ ] The limit on the number of lines added to a single file (needs to be customized by the team)
+- [ ] Business capabilities do not depend on language features
 
 ## to be completed
 - [ ] Parsing the meaning of the checklist, explaining why and how
