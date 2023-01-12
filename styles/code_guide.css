@@ -295,6 +295,19 @@ pre code {
     border-bottom: 1px solid #dfe1e8;
 }
 
+/*
+ * Footer
+ */
+
+.footer {
+    padding: 3rem 1rem;
+    font-size: 90%;
+    text-align: center;
+}
+
+.footer p {
+    margin-bottom: .5rem;
+}
 
 /*
  * Footer
