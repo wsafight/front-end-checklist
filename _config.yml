@@ -1,6 +1,6 @@
-name:          Code Guide by @AlloyTeam
-description:   Standards for developing flexible, durable, and sustainable HTML and CSS, and maintainable JavaScript
-url:           https://github.com/AlloyTeam/CodeGuide
+name:          Front End Checklist by @wsafight
+description:   在 CR 新同学的代码中，有很多的知识和代码点需要重复解释，这里尝试列一个清单，以方便自己和他人
+url:           https://github.com/wsafight/front-end-checklist
 
 include:       [".editorconfig", ".jscsrc", ".jshintrc", ".csslintrc", ".scss-lint.yml"]
 
