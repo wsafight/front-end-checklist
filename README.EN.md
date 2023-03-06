@@ -16,6 +16,7 @@ In the code of new CR classmates, there are a lot of knowledge and code points t
 - [ ] Continue to split functions until the meaning can be expressed in one sentence (one function only completes one function)
 - [ ] Don't design all-in-one functions, developers will only write two kinds of code, one with bugs, and the other with bugs in the future
 - [ ] Destructuring is preferred whenever
+- [ ] Do not process both synchronous and asynchronous data in one statement
 - [ ] The return value of the function must be clear, clear, and unified, and it must not appear that there are asynchronous and synchronous results in a function
 - [ ] In the hook function, only the call is written, not the specific logic code
 - [ ] Do not amplify the impact of the code
