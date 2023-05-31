@@ -1,5 +1,5 @@
 // bad
-imgBgSrc
+bgImgSrc
 
 
 // good
