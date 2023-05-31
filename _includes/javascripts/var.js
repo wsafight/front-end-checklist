@@ -1,0 +1,6 @@
+// bad
+imgBgSrc
+
+
+// good
+backgroundImgSrc

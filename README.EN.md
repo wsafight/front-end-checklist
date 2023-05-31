@@ -28,7 +28,7 @@ In the code of new CR classmates, there are a lot of knowledge and code points t
 - [ ] Use object to pass parameters when there are more than 3 function parameters
 - [ ] Avoid using boolean parameters, use objects to pass parameters if necessary
 - [ ] Try not to use the default export
-- [ ] Add useful extra information by adding function intents on the code through words like for, by, from, when
+- [ ] Add useful extra information by adding function intents on the code through words like for, by, from, when, then
 - [ ] Reduce unnecessary data type default conversion and coercion (analyze why the current data is not the data type, instead of converting)
 - [ ] Consider whether false 0 '' has the same meaning as null and undefined during Boolean operations
 - [ ] In the process of judging, first judge the large-scale, and then make small-scale judgments, such as: authority judgment -> data authority judgment -> business judgment
