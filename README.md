@@ -2,6 +2,8 @@
 
 Read this in other languages: [English](https://github.com/wsafight/front-end-checklist/blob/main/README.EN.md)
 
+当前网站 [前端开发检查清单](https://wsafight.github.io/front-end-checklist/)
+
 > 本文不是代码规范，但也可能会限制您的代码风格
 
 在 CR 新同学的代码中，有很多的知识和代码点需要重复解释，这里尝试列一个清单，以方便自己和他人。
