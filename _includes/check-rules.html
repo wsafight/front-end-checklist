@@ -98,6 +98,15 @@
 
     <div class="section" id="check-type">
         <div class="col">
+            不要在一个语句中同时处理同步数据和异步数据
+        </div>
+        <div class="col">
+            {% highlight javascript %}{% include javascripts/async-statement.js %}{% endhighlight %}
+        </div>
+    </div>
+
+    <div class="section" id="check-type">
+        <div class="col">
             函数返回值要，清楚，明了，统一，千万不要出现在一个函数中存在异步和同步两种结果
         </div>
         <div class="col">
