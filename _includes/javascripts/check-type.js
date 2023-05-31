@@ -22,3 +22,14 @@ submit({
     age,
     ...secondaryInfo,
 })
+
+// 注：以下为 lua 代码，没有检查 b 变量的类型是 2021.07.13 B站宕机事故的主要原因
+// 具体可看 https://cloud.tencent.com/developer/article/2251012
+
+local _gcd
+_gcd = function (a, b)
+    if b == 0 then
+        return a
+    end
+    return _gcd(b, a% b)
+end
