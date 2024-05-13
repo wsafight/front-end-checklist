@@ -9,6 +9,7 @@ In the code of new CR classmates, there are a lot of knowledge and code points t
 - [ ] Always check the data type
 - [ ] Input validation is required at all times
 - [ ] Limits such as max and maximum length need to be added to the input box at any time
+- [ ] Be sensitive to API calls, especially when low-frequency calls change to high-frequency calls
 - [ ] When writing functions, pay attention to wide entry and strict exit, be tolerant to the received data, and strict to the output data
 - [ ] Watch out for the difference of 1 error, always consider the difference between <= and <
 - [ ] Prioritize abnormal situations to facilitate real business processing
