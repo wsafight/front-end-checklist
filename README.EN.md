@@ -14,6 +14,9 @@ In the code of new CR classmates, there are a lot of knowledge and code points t
 - [ ] Watch out for the difference of 1 error, always consider the difference between <= and <
 - [ ] Prioritize abnormal situations to facilitate real business processing
 - [ ] Conditional judgment and loop up to three layers
+- [ ] Limit all code to extremely simple control flow structures—no goto statements, setjmp or longjmp structures, no indirect or direct recursive calls
+- [ ] All loops must have a fixed upper limit. It must be statically verified by a detection tool that the loop cannot reach the preset iteration upper limit. If the upper limit cannot be statically verified, it can be considered a violation of this principle
+- [ ] Data objects must be declared at the smallest possible scope
 - [ ] Continue to split functions until the meaning can be expressed in one sentence (one function only completes one function)
 - [ ] Don't design all-in-one functions, developers will only write two kinds of code, one with bugs, and the other with bugs in the future
 - [ ] Destructuring is preferred whenever
