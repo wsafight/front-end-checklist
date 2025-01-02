@@ -14,6 +14,7 @@ Read this in other languages: [English](https://github.com/wsafight/front-end-ch
 - [ ] 任何时刻都要检查数据类型
 - [ ] 任何时刻都要基于业务进行输入验证
 - [ ] 任何时刻都需要在输入框内添加 max 最大长度等限制
+- [ ] 优先使用 const，直到变量需要改变时改为 let
 - [ ] 要敏感的对待 API 调用，尤其是针对低频调用变化为高频调用
 - [ ] 编写函数时注意宽入严出，对接受的数据要宽容，对输出的数据要严格
 - [ ] 注意差 1 错误，时刻考虑 <= 和 < 的差距
@@ -57,6 +58,7 @@ Read this in other languages: [English](https://github.com/wsafight/front-end-ch
 - [ ] 永远不要在渲染函数中发出网络请求
 - [ ] 永远不要在渲染中创造新的组件，这将导致 React 反复销毁并重新创建子组件树
 - [ ] 轻易不要复制代码，如果必需的话，请手敲一遍，确保需要执行的每一行代码都是可用的
+- [ ] 对引入的开源工具都浅浅的封装一层，保证变化时候改动较小
 - [ ] 结构的设计要尽量考虑向前兼容和以后的版本升级，并为某些未来可能的应用保留余地
 - [ ] 解决 bug 不能只考虑 bug 本身，要分析产生的原因
 - [ ] 不要在提示用户的信息的中添加语气助词以及网络用语，使用陈述句
@@ -64,7 +66,7 @@ Read this in other languages: [English](https://github.com/wsafight/front-end-ch
 - [ ] 少引用不需要的代码，开源项目是否能够只引入一部分
 - [ ] 建议不要在 package.json 依赖项中使用 ^ ~ 等，最好直接使用当前的版本号，以避免依赖项升级导致项目问题
 - [ ] 尽量不使用行内样式，即使使用 props 传递，在一定范围内也要传递 class 类
-- [ ] 注重语意，操作数组不需要返回值时使用 forEach，而不是 map，同时 map 会比 forEach 慢
+- [ ] 注重语意，操作数组不需要返回值时使用 forEach，而不是 map
 - [ ] 多使用可以终止的循环，如 some，every，find 等（空数组使用 some 时返回 false，every 返回 true）
 - [ ] 程序要懒惰，不到最后一刻绝对不去获取或者处理数据
 - [ ] 不要使用 setTimeout 解决异步问题，这将会成为一个不易重现（更加复杂）的 bug
