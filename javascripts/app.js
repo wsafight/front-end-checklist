@@ -29,10 +29,6 @@
       var text = el.getAttribute('data-' + lang);
       if (text != null) el.innerHTML = text;
     });
-    $$('[data-i18n-ph]').forEach(function (el) {
-      var text = el.getAttribute('data-ph-' + lang);
-      if (text != null) el.setAttribute('placeholder', text);
-    });
 
     $$('.lang-btn').forEach(function (btn) {
       var active = btn.getAttribute('data-lang') === lang;
@@ -147,51 +143,6 @@
     }
   }
 
-  /* ---------- search / filter ---------- */
-  function initSearch() {
-    var input = $('#searchInput');
-    if (!input) return;
-    var t = null;
-    input.addEventListener('input', function () {
-      clearTimeout(t);
-      t = setTimeout(function () { filter(input.value.trim().toLowerCase()); }, 80);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === '/' && document.activeElement !== input) {
-        var tag = (document.activeElement && document.activeElement.tagName) || '';
-        if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
-          e.preventDefault();
-          input.focus();
-          input.select();
-        }
-      }
-      if (e.key === 'Escape' && document.activeElement === input) {
-        input.value = '';
-        filter('');
-        input.blur();
-      }
-    });
-  }
-
-  function filter(q) {
-    var noRes = $('#noResults');
-    var anyVisible = false;
-    $$('.card').forEach(function (card) {
-      var items = $$('ul > li', card);
-      var hasMatch = false;
-      items.forEach(function (li) {
-        var text = li.textContent.toLowerCase();
-        var head = (card.querySelector('h2') || {}).textContent || '';
-        var match = !q || text.indexOf(q) !== -1 || head.toLowerCase().indexOf(q) !== -1;
-        li.classList.toggle('is-filtered-hidden', !match);
-        if (match) hasMatch = true;
-      });
-      card.classList.toggle('is-filtered-hidden', !hasMatch);
-      if (hasMatch) anyVisible = true;
-    });
-    if (noRes) noRes.classList.toggle('is-visible', !!q && !anyVisible);
-  }
-
   /* ---------- init ---------- */
   function init() {
     bindLang();
@@ -202,7 +153,6 @@
     initScrollToTop();
     initProgressBar();
     initTocActive();
-    initSearch();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

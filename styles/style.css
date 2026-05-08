@@ -335,73 +335,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   box-shadow: 0 0 10px var(--accent-ring);
 }
 
-/* ====== Search bar ====== */
-.search-wrap {
-  position: sticky;
-  top: 3px;
-  z-index: 30;
-  padding: .85rem 1rem;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-soft);
-}
-.search-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-}
-.search-box {
-  position: relative;
-  flex: 1;
-  max-width: 520px;
-}
-.search-box svg {
-  position: absolute;
-  left: 14px; top: 50%;
-  transform: translateY(-50%);
-  width: 16px; height: 16px;
-  color: var(--fg-muted);
-  pointer-events: none;
-}
-.search-box input {
-  width: 100%;
-  appearance: none;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg);
-  font: inherit;
-  font-size: .92rem;
-  padding: .55rem .85rem .55rem 2.35rem;
-  border-radius: 999px;
-  transition: all .2s var(--ease);
-}
-.search-box input::placeholder { color: var(--fg-muted); }
-.search-box input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-ring);
-}
-.search-box kbd {
-  position: absolute;
-  right: 10px; top: 50%;
-  transform: translateY(-50%);
-  font: inherit;
-  font-size: .7rem;
-  padding: 1px 6px;
-  color: var(--fg-muted);
-  background: var(--bg-alt);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  pointer-events: none;
-}
-
-@media (max-width: 48em) {
-  .search-box kbd { display: none; }
-}
-
 /* ====== Main wrapper ====== */
 .page {
   max-width: 1200px;
@@ -636,10 +569,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-family: "SF Mono", "JetBrains Mono", "PT Mono", Menlo, Consolas, monospace;
 }
 
-/* hide items when filtering */
-.card.is-filtered-hidden,
-.card li.is-filtered-hidden { display: none; }
-
 /* ====== Category colors ====== */
 .card#naming, .toc a[href="#naming"] { --cat: var(--c-naming); }
 .card#types, .toc a[href="#types"] { --cat: var(--c-types); }
@@ -666,18 +595,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .card#a11y-extra, .toc a[href="#a11y-extra"] { --cat: var(--c-a11y-extra); }
 .card#docs, .toc a[href="#docs"] { --cat: var(--c-docs); }
 .card#pr, .toc a[href="#pr"] { --cat: var(--c-pr); }
-
-/* ====== No results ====== */
-.no-results {
-  padding: 3rem 1.5rem;
-  text-align: center;
-  color: var(--fg-muted);
-  background: var(--surface);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  display: none;
-}
-.no-results.is-visible { display: block; }
 
 /* ====== Footer ====== */
 .footer {
