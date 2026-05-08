@@ -1,9 +1,24 @@
 <header class="masthead">
+  <div class="grid-bg" aria-hidden="true"></div>
   <div class="container">
-    <div class="lang-switch" role="group" aria-label="Language">
-      <button type="button" class="lang-btn" data-lang="zh">中文</button>
-      <button type="button" class="lang-btn" data-lang="en">EN</button>
+    <div class="top-controls">
+      <div class="theme-switch" role="group" aria-label="Theme">
+        <button type="button" class="theme-btn" data-theme="light" aria-label="Light theme" title="Light">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button type="button" class="theme-btn" data-theme="auto" aria-label="System theme" title="System">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+        </button>
+        <button type="button" class="theme-btn" data-theme="dark" aria-label="Dark theme" title="Dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="zh">中文</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
     </div>
+
     <span class="icon" aria-hidden="true">&#9997;</span>
     <h1>
       <span data-i18n data-zh="前端开发检查清单" data-en="Front-End Development Checklist">前端开发检查清单</span>
@@ -13,6 +28,12 @@
        data-en="Self-review before PR, align standards in CR — not a style guide, but it will shape your coding habits.">
       提交前自检，CR 时对齐标准 —— 不是代码规范，但会影响你的编码习惯。
     </p>
+
+    <div class="masthead-stats" aria-label="Stats">
+      <span class="stat-pill"><strong data-stat="sections">25</strong><span data-i18n data-zh="个分类" data-en="sections">个分类</span></span>
+      <span class="stat-pill"><strong data-stat="items">0</strong><span data-i18n data-zh="条清单" data-en="checklist items">条清单</span></span>
+      <span class="stat-pill"><span class="dot" aria-hidden="true"></span><span data-i18n data-zh="可勾选进度自动保存" data-en="Progress auto-saved">可勾选进度自动保存</span></span>
+    </div>
 
     <p class="masthead-links">
       <a href="https://github.com/wsafight/front-end-checklist" target="_blank" rel="noopener" aria-label="GitHub">
