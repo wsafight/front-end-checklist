@@ -397,47 +397,9 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   border-radius: 4px;
   pointer-events: none;
 }
-.reset-btn {
-  appearance: none;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--fg-muted);
-  font: inherit;
-  font-size: .8rem;
-  padding: .45rem .85rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all .15s var(--ease);
-}
-.reset-btn:hover {
-  color: var(--fg);
-  border-color: var(--fg-muted);
-}
-.global-progress {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  font-size: .8rem;
-  color: var(--fg-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.global-progress .track {
-  width: 80px; height: 6px;
-  background: var(--border-soft);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.global-progress .fill {
-  height: 100%; width: 0%;
-  background: linear-gradient(90deg, var(--success) 0%, #10b981 100%);
-  border-radius: 999px;
-  transition: width .3s var(--ease);
-}
 
 @media (max-width: 48em) {
   .search-box kbd { display: none; }
-  .global-progress .track { width: 60px; }
 }
 
 /* ====== Main wrapper ====== */
@@ -550,10 +512,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-weight: 600;
 }
 .toc a.is-active::before { height: 60%; }
-.toc a.is-done { color: var(--fg-muted); }
-.toc a.is-done .toc-label { text-decoration: line-through; opacity: .7; }
-
-.toc .toc-label { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ====== Section cards ====== */
 .checklist {
@@ -613,28 +571,19 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   border-color: var(--cat, var(--accent));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat, var(--accent)) 25%, transparent), var(--card-shadow);
 }
-.card.is-complete::before { opacity: 1; background: linear-gradient(90deg, var(--success), #10b981); }
 
-.card-head {
-  display: flex;
-  align-items: center;
-  gap: .65rem;
-  margin: 0 0 .85rem;
-  padding-bottom: .85rem;
-  border-bottom: 1px solid var(--border-soft);
-}
 .card h2 {
   display: flex;
   align-items: center;
   gap: .65rem;
-  flex: 1;
-  min-width: 0;
-  margin: 0;
+  margin: 0 0 1rem;
+  padding-bottom: .85rem;
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.01em;
   line-height: 1.3;
+  border-bottom: 1px solid var(--border-soft);
 }
 .card h2 .card-emoji {
   display: inline-flex;
@@ -651,30 +600,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 .card:hover h2 .card-emoji { transform: scale(1.08) rotate(-4deg); }
 
-.card-progress {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  font-size: .75rem;
-  color: var(--fg-muted);
-  font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
-}
-.card-progress .track {
-  width: 54px; height: 5px;
-  background: var(--border-soft);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.card-progress .fill {
-  height: 100%; width: 0%;
-  background: var(--cat, var(--accent));
-  border-radius: 999px;
-  transition: width .3s var(--ease), background .3s var(--ease);
-}
-.card.is-complete .card-progress .fill { background: var(--success); }
-.card.is-complete .card-progress { color: var(--success); font-weight: 600; }
-
 .card ul {
   list-style: none;
   margin: 0;
@@ -682,16 +607,25 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 .card li {
   position: relative;
-  padding: .65rem 0 .65rem 2rem;
+  padding: .65rem 0 .65rem 1.5rem;
   font-size: .94rem;
   line-height: 1.65;
   color: var(--fg-soft);
   border-top: 1px dashed var(--border-soft);
-  transition: color .2s var(--ease), opacity .2s var(--ease);
 }
 .card li:first-child { border-top: 0; }
-.card li.is-checked { color: var(--fg-muted); }
-.card li.is-checked .li-text { text-decoration: line-through; opacity: .7; }
+.card li::before {
+  content: "";
+  position: absolute;
+  left: .15rem;
+  top: 1.1em;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cat, var(--accent));
+  opacity: .85;
+}
 .card li code {
   padding: 1px 6px;
   font-size: .82em;
@@ -702,56 +636,9 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-family: "SF Mono", "JetBrains Mono", "PT Mono", Menlo, Consolas, monospace;
 }
 
-/* custom checkbox */
-.li-check {
-  position: absolute;
-  left: .1rem;
-  top: .85rem;
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid var(--border);
-  border-radius: 5px;
-  background: var(--surface);
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  transition: all .18s var(--ease);
-  flex-shrink: 0;
-  display: inline-block;
-}
-.li-check:hover {
-  border-color: var(--cat, var(--accent));
-  background: color-mix(in srgb, var(--cat, var(--accent)) 8%, var(--surface));
-}
-.li-check:checked {
-  background: var(--cat, var(--accent));
-  border-color: var(--cat, var(--accent));
-}
-.li-check:checked::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 1px;
-  width: 5px;
-  height: 10px;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transform: rotate(45deg);
-}
-.li-check:focus-visible {
-  outline: 2px solid var(--cat, var(--accent));
-  outline-offset: 2px;
-}
-
-/* hide dimmed items when filtering */
+/* hide items when filtering */
 .card.is-filtered-hidden,
 .card li.is-filtered-hidden { display: none; }
-.card li mark.hl {
-  background: color-mix(in srgb, var(--cat, var(--accent)) 25%, transparent);
-  color: inherit;
-  padding: 0 2px;
-  border-radius: 3px;
-}
 
 /* ====== Category colors ====== */
 .card#naming, .toc a[href="#naming"] { --cat: var(--c-naming); }
