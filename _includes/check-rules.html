@@ -477,13 +477,3 @@
 
 </section>
 
-<script>
-(function () {
-  document.addEventListener('click', function (e) {
-    var li = e.target.closest ? e.target.closest('.card li') : null;
-    if (!li || !li.parentElement || !li.parentElement.parentElement.classList.contains('card')) return;
-    if (e.target.tagName === 'A' || e.target.tagName === 'CODE') return;
-    li.classList.toggle('is-checked');
-  });
-})();
-</script>
