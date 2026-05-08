@@ -1,8 +1,0 @@
-.element:after {
-    content: "";
-    background-image: url("logo.png");
-}
-
-li[data-type="single"] {
-    ...
-}

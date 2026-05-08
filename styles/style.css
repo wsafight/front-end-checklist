@@ -412,16 +412,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   line-height: 1;
   flex-shrink: 0;
 }
-.card h2 .card-count {
-  margin-left: auto;
-  font-size: .72rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-  background: var(--bg-alt);
-  padding: .2rem .55rem;
-  border-radius: 999px;
-  letter-spacing: .02em;
-}
 
 .card ul {
   list-style: none;
@@ -430,61 +420,24 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 .card li {
   position: relative;
-  padding: .65rem 0 .65rem 1.85rem;
+  padding: .65rem 0 .65rem 1.5rem;
   font-size: .94rem;
   line-height: 1.65;
   color: var(--fg-soft);
   border-top: 1px dashed var(--border-soft);
-  cursor: pointer;
-  transition: color .15s var(--ease), padding-left .2s var(--ease);
-  user-select: none;
 }
 .card li:first-child { border-top: 0; }
-.card li:hover { color: var(--fg); padding-left: 2rem; }
 .card li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: .9em;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--border);
-  border-radius: 5px;
-  background: var(--bg);
-  transition: all .18s var(--ease);
-  box-sizing: border-box;
-}
-.card li:hover::before {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.card li.is-checked {
-  color: var(--fg-muted);
-  text-decoration: line-through;
-  text-decoration-color: rgba(148, 163, 184, 0.5);
-  text-decoration-thickness: 1px;
-}
-.card li.is-checked::before {
+  left: .1rem;
+  top: 1.1em;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-ring);
-}
-.card li.is-checked::after {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: calc(.9em + 2px);
-  width: 9px;
-  height: 5px;
-  border-left: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transform: rotate(-45deg);
-  animation: checkPop .25s var(--ease);
-}
-@keyframes checkPop {
-  0%   { transform: rotate(-45deg) scale(0); }
-  60%  { transform: rotate(-45deg) scale(1.25); }
-  100% { transform: rotate(-45deg) scale(1); }
+  opacity: .85;
 }
 .card li code {
   padding: 1px 6px;

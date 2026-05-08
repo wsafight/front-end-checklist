@@ -1,6 +1,0 @@
-// bad
-bgImgSrc
-
-
-// good
-backgroundImgSrc

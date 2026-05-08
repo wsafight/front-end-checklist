@@ -1,6 +1,5 @@
 (function () {
   var STORAGE_KEY = 'fec-lang';
-  var CHECKED_KEY = 'fec-checked';
   var DEFAULT_LANG = 'zh';
   var supported = ['zh', 'en'];
 
@@ -82,77 +81,6 @@
     update();
   }
 
-  function getCheckedSet() {
-    try {
-      var raw = localStorage.getItem(CHECKED_KEY);
-      if (!raw) return {};
-      var parsed = JSON.parse(raw);
-      return (parsed && typeof parsed === 'object') ? parsed : {};
-    } catch (e) { return {}; }
-  }
-
-  function saveChecked(set) {
-    try { localStorage.setItem(CHECKED_KEY, JSON.stringify(set)); } catch (e) {}
-  }
-
-  function itemKey(li) {
-    var card = li.closest('.card');
-    if (!card) return null;
-    var siblings = card.querySelectorAll('li');
-    for (var i = 0; i < siblings.length; i++) {
-      if (siblings[i] === li) return card.id + ':' + i;
-    }
-    return null;
-  }
-
-  function initChecklist() {
-    var checked = getCheckedSet();
-    var lis = document.querySelectorAll('.card li');
-    for (var i = 0; i < lis.length; i++) {
-      var key = itemKey(lis[i]);
-      if (key && checked[key]) lis[i].classList.add('is-checked');
-    }
-
-    document.addEventListener('click', function (e) {
-      var li = e.target.closest ? e.target.closest('.card li') : null;
-      if (!li) return;
-      if (e.target.tagName === 'A' || e.target.tagName === 'CODE') return;
-      li.classList.toggle('is-checked');
-      var key = itemKey(li);
-      if (key) {
-        var set = getCheckedSet();
-        if (li.classList.contains('is-checked')) set[key] = 1;
-        else delete set[key];
-        saveChecked(set);
-      }
-      updateCardCounts();
-    });
-  }
-
-  function updateCardCounts() {
-    var cards = document.querySelectorAll('.card');
-    for (var i = 0; i < cards.length; i++) {
-      var card = cards[i];
-      var countEl = card.querySelector('.card-count');
-      if (!countEl) continue;
-      var total = card.querySelectorAll('li').length;
-      var done = card.querySelectorAll('li.is-checked').length;
-      countEl.textContent = done + ' / ' + total;
-    }
-  }
-
-  function injectCardCounts() {
-    var cards = document.querySelectorAll('.card');
-    for (var i = 0; i < cards.length; i++) {
-      var h2 = cards[i].querySelector('h2');
-      if (!h2 || h2.querySelector('.card-count')) continue;
-      var span = document.createElement('span');
-      span.className = 'card-count';
-      h2.appendChild(span);
-    }
-    updateCardCounts();
-  }
-
   function initTocActive() {
     var tocLinks = document.querySelectorAll('.toc a[href^="#"]');
     if (!tocLinks.length || !('IntersectionObserver' in window)) return;
@@ -192,9 +120,6 @@
   function init() {
     bindLang();
     applyLang(detectLang());
-    injectCardCounts();
-    initChecklist();
-    updateCardCounts();
     initScrollToTop();
     initProgressBar();
     initTocActive();

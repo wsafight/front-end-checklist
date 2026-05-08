@@ -4,8 +4,4 @@ description_zh: 一份实用的前端开发检查清单 —— 提交前自检�
 description_en: A practical checklist for front-end development — self-review before PR, align standards in CR.
 url:           https://github.com/wsafight/front-end-checklist
 
-include:       [".editorconfig", ".jscsrc", ".jshintrc", ".csslintrc", ".scss-lint.yml"]
-
-markdown:      rdiscount
 permalink:     pretty
-pygments:      true
