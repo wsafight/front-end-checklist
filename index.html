@@ -2,15 +2,60 @@
 layout: default
 ---
 
-<a href="#top" id="toTop"></a>
+<a href="#top" id="toTop" aria-label="Back to top"></a>
 
-<div class="section" id="golden-rule">
-  <div class="col">
-    <h2>提交可交付的代码</h2>
-    <p>本文不是代码规范，但也可能会限制您的代码风格</p>
-    <p>如果你想要为这个清单做贡献或觉得有不合理的地方，请访问<a href="https://github.com/wsafight/front-end-checklist/issues/new">New Issue</a>。
-    </p>
+<main class="page" id="top">
+  <aside class="toc" aria-label="Table of contents">
+    <h3 data-i18n data-zh="目录" data-en="Contents">目录</h3>
+    <ul>
+      <li><a href="#naming" data-i18n data-zh="命名规范" data-en="Naming">命名规范</a></li>
+      <li><a href="#types" data-i18n data-zh="数据与类型" data-en="Data &amp; Types">数据与类型</a></li>
+      <li><a href="#functions" data-i18n data-zh="函数设计" data-en="Function Design">函数设计</a></li>
+      <li><a href="#state" data-i18n data-zh="状态管理" data-en="State Management">状态管理</a></li>
+      <li><a href="#control-flow" data-i18n data-zh="控制流" data-en="Control Flow">控制流</a></li>
+      <li><a href="#async" data-i18n data-zh="异步处理" data-en="Async">异步处理</a></li>
+      <li><a href="#fetching" data-i18n data-zh="数据请求" data-en="Data Fetching">数据请求</a></li>
+      <li><a href="#ui" data-i18n data-zh="UI 与渲染" data-en="UI &amp; Rendering">UI 与渲染</a></li>
+      <li><a href="#styles" data-i18n data-zh="样式与响应式" data-en="Styles &amp; Responsive">样式与响应式</a></li>
+      <li><a href="#routing" data-i18n data-zh="路由与权限" data-en="Routing &amp; Permissions">路由与权限</a></li>
+      <li><a href="#performance" data-i18n data-zh="性能" data-en="Performance">性能</a></li>
+      <li><a href="#security" data-i18n data-zh="安全与健壮性" data-en="Security">安全与健壮性</a></li>
+      <li><a href="#forms" data-i18n data-zh="表单与交互" data-en="Forms">表单与交互</a></li>
+      <li><a href="#errors" data-i18n data-zh="错误处理" data-en="Error Handling">错误处理</a></li>
+      <li><a href="#testing" data-i18n data-zh="测试" data-en="Testing">测试</a></li>
+      <li><a href="#a11y" data-i18n data-zh="无障碍访问" data-en="Accessibility">无障碍访问</a></li>
+      <li><a href="#ux" data-i18n data-zh="用户体验" data-en="User Experience">用户体验</a></li>
+      <li><a href="#quality" data-i18n data-zh="代码质量" data-en="Code Quality">代码质量</a></li>
+      <li><a href="#engineering" data-i18n data-zh="工程化" data-en="Engineering">工程化</a></li>
+      <li><a href="#i18n" data-i18n data-zh="国际化" data-en="i18n">国际化</a></li>
+      <li><a href="#monitoring" data-i18n data-zh="日志与监控" data-en="Logging &amp; Monitoring">日志与监控</a></li>
+      <li><a href="#deps" data-i18n data-zh="依赖管理" data-en="Dependencies">依赖管理</a></li>
+      <li><a href="#a11y-extra" data-i18n data-zh="可访问性补充" data-en="A11y Supplement">可访问性补充</a></li>
+      <li><a href="#docs" data-i18n data-zh="文档与协作" data-en="Docs &amp; Collab">文档与协作</a></li>
+      <li><a href="#pr" data-i18n data-zh="PR 自检" data-en="PR Self-Review">PR 自检</a></li>
+    </ul>
+  </aside>
+
+  <div class="content">
+    <section class="intro" aria-label="Intro">
+      <h2 data-i18n data-zh="如何使用" data-en="How to use">如何使用</h2>
+      <p data-i18n
+         data-zh="在 Code Review 新同学的代码时，有很多知识和细节需要反复解释。这份清单用于提交前自检，也用于 Review 时对齐标准。"
+         data-en="This checklist avoids repeating the same explanations during CR. Use it for self-review before PR, and to align standards in CR.">
+        在 Code Review 新同学的代码时，有很多知识和细节需要反复解释。这份清单用于提交前自检，也用于 Review 时对齐标准。
+      </p>
+      <ul>
+        <li data-i18n data-zh="提交 PR 前按清单完成一次自检"
+            data-en="Complete a self-review against this checklist before submitting a PR">提交 PR 前按清单完成一次自检</li>
+        <li data-i18n data-zh="CR 时用清单项说明问题，而不是只给出个人偏好"
+            data-en="Use checklist items to explain issues during CR, not personal preferences">CR 时用清单项说明问题，而不是只给出个人偏好</li>
+        <li data-i18n data-zh="清单不是机械打分标准，优先关注业务边界、异常处理、可维护性和用户体验"
+            data-en="Not a mechanical scoring rubric — prioritize business boundaries, error handling, maintainability, and UX">清单不是机械打分标准，优先关注业务边界、异常处理、可维护性和用户体验</li>
+        <li data-i18n data-zh="确实需要违反某条规则时，应在 PR 描述中说明原因、影响范围和兜底方案"
+            data-en="If you must violate a rule, explain the reason, impact, and fallback in the PR description">确实需要违反某条规则时，应在 PR 描述中说明原因、影响范围和兜底方案</li>
+      </ul>
+    </section>
+
+    {% include check-rules.html %}
   </div>
-</div>
-
-{% include check-rules.html %}
+</main>

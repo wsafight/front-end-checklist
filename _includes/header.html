@@ -1,11 +1,21 @@
 <header class="masthead">
   <div class="container">
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" data-lang="zh">中文</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+    </div>
     <span class="icon">&#9997;</span>
-    <h1>{{ site.name }}</h1>
-    <p class="lead">{{ site.description }}</p>
+    <h1>
+      <span data-i18n data-zh="前端开发检查清单" data-en="Front-End Development Checklist">前端开发检查清单</span>
+    </h1>
+    <p class="lead" data-i18n
+       data-zh="提交前自检，CR 时对齐标准 —— 不是代码规范，但会影响你的编码习惯。"
+       data-en="Self-review before PR, align standards in CR — not a style guide, but it will shape your coding habits.">
+      提交前自检，CR 时对齐标准 —— 不是代码规范，但会影响你的编码习惯。
+    </p>
 
     <p class="masthead-links">
-      <a href="https://github.com/wsafight/front-end-checklist">
+      <a href="https://github.com/wsafight/front-end-checklist" target="_blank" rel="noopener">
         <span class="icon icon-github-circled"></span>
       </a>
     </p>

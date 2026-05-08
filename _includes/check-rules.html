@@ -1,474 +1,489 @@
-<div class="section" id="check-exist">
-    <div class="col">
-        任何时刻都要检查数据存在
-    </div>
-    <div class="col">
-        {% highlight javascript %}{% include javascripts/check-exist.js %}{% endhighlight %}
-    </div>
-</div>
+<section class="checklist">
 
-<div class="section" id="check-type">
-    <div class="col">
-        任何时刻都要检查数据类型
-    </div>
-    <div class="col">
-        {% highlight javascript %}{% include javascripts/check-type.js %}{% endhighlight %}
-    </div>
-</div>
+  <article class="card" id="naming">
+    <h2><span class="card-emoji">🏷️</span><span data-i18n data-zh="命名规范" data-en="Naming Conventions">命名规范</span></h2>
+    <ul>
+      <li data-i18n data-zh="变量缩写必须得到团队认可，否则使用完整单词"
+          data-en="Abbreviations must be approved by the team; otherwise use full words">变量缩写必须得到团队认可，否则使用完整单词</li>
+      <li data-i18n data-zh="常量全大写，单词间用下划线分隔，语义完整清晰"
+          data-en="Constants are ALL_CAPS with underscores, semantically complete">常量全大写，单词间用下划线分隔，语义完整清晰</li>
+      <li data-i18n
+          data-zh="函数命名用 <code>动词 + 名词</code>，如 <code>sendSms</code>；模板/JSX 中用 <code>handle + 名词 + 动词</code>，如 <code>handleSmsSend</code>"
+          data-en="Functions use <code>verb + noun</code> (e.g. <code>sendSms</code>); in templates/JSX use <code>handle + noun + verb</code> (e.g. <code>handleSmsSend</code>)">函数命名用 <code>动词 + 名词</code>，如 <code>sendSms</code>；模板/JSX 中用 <code>handle + 名词 + 动词</code>，如 <code>handleSmsSend</code></li>
+      <li data-i18n
+          data-zh="善用 <code>for</code>、<code>by</code>、<code>from</code>、<code>when</code>、<code>then</code> 等词表达函数意图"
+          data-en="Use words like <code>for</code>, <code>by</code>, <code>from</code>, <code>when</code>, <code>then</code> to express function intent">善用 <code>for</code>、<code>by</code>、<code>from</code>、<code>when</code>、<code>then</code> 等词表达函数意图</li>
+    </ul>
+  </article>
 
+  <article class="card" id="types">
+    <h2><span class="card-emoji">🧩</span><span data-i18n data-zh="数据与类型" data-en="Data &amp; Types">数据与类型</span></h2>
+    <ul>
+      <li data-i18n
+          data-zh="在数据边界处（接口响应、用户输入、路由参数、本地缓存、第三方 SDK 回调）检查数据是否存在及类型"
+          data-en="Check data existence and type at boundaries: API responses, user input, route params, local cache, third-party SDK callbacks">在数据边界处（接口响应、用户输入、路由参数、本地缓存、第三方 SDK 回调）检查数据是否存在及类型</li>
+      <li data-i18n
+          data-zh="减少不必要的类型默认转换与强制转换，优先分析数据为何不是预期类型"
+          data-en="Minimize unnecessary type coercion — analyze why data isn't the expected type instead of converting">减少不必要的类型默认转换与强制转换，优先分析数据为何不是预期类型</li>
+      <li data-i18n
+          data-zh='区分"缺失""为空""为 0""为空数组""为空字符串"的业务含义'
+          data-en='Distinguish between "missing", "empty", "0", "empty array", and "empty string" in business terms'>区分"缺失""为空""为 0""为空数组""为空字符串"的业务含义</li>
+      <li data-i18n
+          data-zh="布尔运算中明确 <code>false</code>、<code>0</code>、<code>''</code> 是否与 <code>null</code>、<code>undefined</code> 语义相同"
+          data-en="In boolean expressions, clarify whether <code>false</code>, <code>0</code>, <code>''</code> are semantically equivalent to <code>null</code>/<code>undefined</code>">布尔运算中明确 <code>false</code>、<code>0</code>、<code>''</code> 是否与 <code>null</code>、<code>undefined</code> 语义相同</li>
+      <li data-i18n
+          data-zh="使用 TypeScript 时避免 <code>any</code>，合理定义类型和接口"
+          data-en="Avoid <code>any</code> in TypeScript; define types and interfaces properly">使用 TypeScript 时避免 <code>any</code>，合理定义类型和接口</li>
+      <li data-i18n
+          data-zh="优先用 <code>interface</code> 描述对象结构，<code>type</code> 用于联合类型等复合场景"
+          data-en="Prefer <code>interface</code> for object shapes; use <code>type</code> for unions and complex compositions">优先用 <code>interface</code> 描述对象结构，<code>type</code> 用于联合类型等复合场景</li>
+      <li data-i18n
+          data-zh="函数参数和返回值都应有明确类型，避免隐式 <code>any</code>"
+          data-en="All function parameters and return values should have explicit types; avoid implicit <code>any</code>">函数参数和返回值都应有明确类型，避免隐式 <code>any</code></li>
+      <li data-i18n
+          data-zh="用联合类型、泛型、类型守卫表达真实约束，而不是绕过类型系统"
+          data-en="Use union types, generics, and type guards to express real constraints instead of bypassing the type system">用联合类型、泛型、类型守卫表达真实约束，而不是绕过类型系统</li>
+      <li data-i18n
+          data-zh="在最小范围内声明数据对象"
+          data-en="Declare data objects in the smallest possible scope">在最小范围内声明数据对象</li>
+    </ul>
+  </article>
 
-<div class="section" id="check-type">
-    <div class="col">
-        任何时刻都要基于业务进行输入验证
-    </div>
-    <div class="col">
-        {% highlight javascript %}{% include javascripts/check-input.js %}{% endhighlight %}
-    </div>
-</div>
+  <article class="card" id="functions">
+    <h2><span class="card-emoji">🧠</span><span data-i18n data-zh="函数设计" data-en="Function Design">函数设计</span></h2>
+    <ul>
+      <li data-i18n data-zh="宽入严出：对接受的数据宽容，对输出的数据严格"
+          data-en="Be liberal in what you accept, strict in what you return">宽入严出：对接受的数据宽容，对输出的数据严格</li>
+      <li data-i18n data-zh="持续拆分函数，直到每个函数只做一件事、能用一句话描述"
+          data-en="Keep splitting functions until each does one thing and can be described in one sentence">持续拆分函数，直到每个函数只做一件事、能用一句话描述</li>
+      <li data-i18n data-zh="函数返回值清晰统一，不要在同一函数中混用同步和异步结果"
+          data-en="Return values must be clear and consistent — never mix sync and async results in one function">函数返回值清晰统一，不要在同一函数中混用同步和异步结果</li>
+      <li data-i18n data-zh="参数超过 3 个时改用对象传参"
+          data-en="Use object parameters when a function takes more than 3 arguments">参数超过 3 个时改用对象传参</li>
+      <li data-i18n data-zh="避免布尔参数，需要时用对象传参"
+          data-en="Avoid boolean parameters; use objects instead">避免布尔参数，需要时用对象传参</li>
+      <li data-i18n data-zh="钩子函数中只写调用，不写具体逻辑"
+          data-en="Hook functions should only contain calls, not logic">钩子函数中只写调用，不写具体逻辑</li>
+      <li data-i18n data-zh="不要轻易封装重复的业务代码，可能只是巧合而非真正重复"
+          data-en="Don't prematurely abstract repeated business code — it may be coincidence, not duplication">不要轻易封装重复的业务代码，可能只是巧合而非真正重复</li>
+    </ul>
+  </article>
 
-<div class="section" id="check-type">
-    <div class="col">
-        任何时刻都需要在输入框内添加 max 最大长度等限制
-    </div>
-    <div class="col">
-        {% highlight javascript %}{% include javascripts/check-rule.js %}{% endhighlight %}
-    </div>
-</div>
+  <article class="card" id="state">
+    <h2><span class="card-emoji">🗂️</span><span data-i18n data-zh="状态管理" data-en="State Management">状态管理</span></h2>
+    <ul>
+      <li data-i18n data-zh="区分服务端状态和客户端状态，避免把接口数据无意义地复制到多个状态中"
+          data-en="Distinguish server state from client state; don't copy API data into multiple states unnecessarily">区分服务端状态和客户端状态，避免把接口数据无意义地复制到多个状态中</li>
+      <li data-i18n data-zh="不存储可以稳定计算得到的派生状态"
+          data-en="Don't store derived state that can be reliably computed">不存储可以稳定计算得到的派生状态</li>
+      <li data-i18n data-zh="状态更新保持不可变，避免直接修改已有对象或数组"
+          data-en="State updates must be immutable — never mutate existing objects or arrays directly">状态更新保持不可变，避免直接修改已有对象或数组</li>
+      <li data-i18n data-zh="状态的来源、更新路径和消费范围要清晰，避免跨组件隐式共享"
+          data-en="State origin, update path, and consumption scope must be clear; avoid implicit cross-component sharing">状态的来源、更新路径和消费范围要清晰，避免跨组件隐式共享</li>
+      <li data-i18n data-zh="复杂状态优先集中到 reducer、状态机或专门的状态管理方案中"
+          data-en="Centralize complex state into reducers, state machines, or dedicated state management solutions">复杂状态优先集中到 reducer、状态机或专门的状态管理方案中</li>
+    </ul>
+  </article>
 
-<div class="section" id="check-type">
-    <div class="col">
-        编写函数时注意宽入严出，对接受的数据要宽容，对输出的数据要严格
-    </div>
-    <div class="col">
-        {% highlight javascript %}{% include javascripts/check-function.js %}{% endhighlight %}
-    </div>
-</div>
+  <article class="card" id="control-flow">
+    <h2><span class="card-emoji">🔀</span><span data-i18n data-zh="控制流" data-en="Control Flow">控制流</span></h2>
+    <ul>
+      <li data-i18n data-zh="优先处理异常情况，再处理正常业务逻辑"
+          data-en="Handle error cases first, then normal business logic">优先处理异常情况，再处理正常业务逻辑</li>
+      <li data-i18n data-zh="条件判断和循环最多三层"
+          data-en="Maximum three levels of nesting for conditions and loops">条件判断和循环最多三层</li>
+      <li data-i18n data-zh="判断顺序：先大范围（权限）再小范围（数据权限、业务判断）"
+          data-en="Order checks from broad to narrow: permissions → data permissions → business logic">判断顺序：先大范围（权限）再小范围（数据权限、业务判断）</li>
+      <li data-i18n data-zh="复杂布尔运算加括号，方便他人阅读"
+          data-en="Add parentheses in complex boolean expressions for readability">复杂布尔运算加括号，方便他人阅读</li>
+      <li data-i18n
+          data-zh="<code>if</code>、<code>else</code>、<code>for</code>、<code>while</code>、<code>do</code>、<code>switch</code>、<code>try</code>、<code>catch</code>、<code>finally</code> 的执行体无论多少行都加 <code>{ }</code>"
+          data-en="Always use <code>{ }</code> for <code>if</code>, <code>else</code>, <code>for</code>, <code>while</code>, <code>do</code>, <code>switch</code>, <code>try</code>, <code>catch</code>, <code>finally</code> bodies"><code>if</code>、<code>else</code>、<code>for</code>、<code>while</code>、<code>do</code>、<code>switch</code>、<code>try</code>、<code>catch</code>、<code>finally</code> 的执行体无论多少行都加 <code>{ }</code></li>
+      <li data-i18n
+          data-zh="注意差 1 错误，时刻区分 <code>&lt;=</code> 和 <code>&lt;</code>"
+          data-en="Watch for off-by-one errors; always distinguish <code>&lt;=</code> from <code>&lt;</code>">注意差 1 错误，时刻区分 <code>&lt;=</code> 和 <code>&lt;</code></li>
+      <li data-i18n
+          data-zh="多用可提前终止的循环：<code>some</code>、<code>every</code>、<code>find</code>（注意空数组时 <code>some</code> 返回 <code>false</code>，<code>every</code> 返回 <code>true</code>）"
+          data-en="Prefer early-terminating loops: <code>some</code>, <code>every</code>, <code>find</code> (note: <code>some</code> returns <code>false</code> and <code>every</code> returns <code>true</code> for empty arrays)">多用可提前终止的循环：<code>some</code>、<code>every</code>、<code>find</code>（注意空数组时 <code>some</code> 返回 <code>false</code>，<code>every</code> 返回 <code>true</code>）</li>
+    </ul>
+  </article>
 
-<div class="section" id="check-type">
-    <div class="col">
-        注意差 1 错误，时刻考虑 <= 和 < 的差距 </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="async">
+    <h2><span class="card-emoji">⏳</span><span data-i18n data-zh="异步处理" data-en="Async Handling">异步处理</span></h2>
+    <ul>
+      <li data-i18n data-zh="不在同一语句中混用同步数据和异步数据"
+          data-en="Don't mix synchronous and asynchronous data in the same statement">不在同一语句中混用同步数据和异步数据</li>
+      <li data-i18n
+          data-zh="异步处理要考虑异常；Promise 必须通过 <code>resolve</code> 或 <code>reject</code> 进入下一状态，避免卡死"
+          data-en="Always handle exceptions in async code; Promises must settle via <code>resolve</code> or <code>reject</code> to avoid hanging">异步处理要考虑异常；Promise 必须通过 <code>resolve</code> 或 <code>reject</code> 进入下一状态，避免卡死</li>
+      <li data-i18n
+          data-zh="不用 <code>setTimeout</code> 解决异步问题，这会制造难以复现的 bug"
+          data-en="Never use <code>setTimeout</code> to work around async issues — it creates hard-to-reproduce bugs">不用 <code>setTimeout</code> 解决异步问题，这会制造难以复现的 bug</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            优先处理异常情况，以方便真正业务处理
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/check-abnormal.js %}{% endhighlight %}
-        </div>
-    </div>
+</section>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            条件判断和循环最多三层(同上)
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/check-loop.js %}{% endhighlight %}
-        </div>
-    </div>
+<section class="checklist">
 
-    <div class="section" id="check-type">
-        <div class="col">
-            不断进行函数拆分，直到用一句话能够表明意义(一个函数只完成一个功能)
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/split-fun.js %}{% endhighlight %}
-        </div>
-    </div>
+  <article class="card" id="fetching">
+    <h2><span class="card-emoji">📡</span><span data-i18n data-zh="数据请求" data-en="Data Fetching">数据请求</span></h2>
+    <ul>
+      <li data-i18n data-zh="每个请求都应考虑加载中、空数据、失败、重试和取消场景"
+          data-en="Every request should handle: loading, empty, failure, retry, and cancellation">每个请求都应考虑加载中、空数据、失败、重试和取消场景</li>
+      <li data-i18n data-zh="避免重复请求，尤其是组件重复渲染、路由切换、依赖变化导致的请求放大"
+          data-en="Avoid duplicate requests caused by re-renders, route changes, or dependency updates">避免重复请求，尤其是组件重复渲染、路由切换、依赖变化导致的请求放大</li>
+      <li data-i18n data-zh="处理并发请求的竞态问题，避免旧响应覆盖新状态"
+          data-en="Handle race conditions in concurrent requests — prevent stale responses from overwriting newer state">处理并发请求的竞态问题，避免旧响应覆盖新状态</li>
+      <li data-i18n data-zh="明确接口错误和业务错误的处理方式，不要只判断 HTTP 状态码"
+          data-en="Distinguish API errors from business errors; don't rely solely on HTTP status codes">明确接口错误和业务错误的处理方式，不要只判断 HTTP 状态码</li>
+      <li data-i18n data-zh="接口响应进入页面前完成必要的归一化、兜底和字段兼容"
+          data-en="Normalize, provide fallbacks, and handle field compatibility before API responses reach the UI">接口响应进入页面前完成必要的归一化、兜底和字段兼容</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            不要设计面面俱到的函数，开发者只会编写两种代码，一种是有 bug 的，另外一种是将来有 bug 的
-        </div>
-        <div class="col">
+  <article class="card" id="ui">
+    <h2><span class="card-emoji">🖼️</span><span data-i18n data-zh="UI 与渲染" data-en="UI &amp; Rendering">UI 与渲染</span></h2>
+    <ul>
+      <li data-i18n data-zh="轻易不要手动操作 DOM"
+          data-en="Avoid manual DOM manipulation">轻易不要手动操作 DOM</li>
+      <li data-i18n data-zh="尽量不使用行内样式，即使通过 props 传递，也应在一定范围内传递 class"
+          data-en="Avoid inline styles; pass class names instead of style objects when possible">尽量不使用行内样式，即使通过 props 传递，也应在一定范围内传递 class</li>
+      <li data-i18n
+          data-zh="操作数组不需要返回值时用 <code>forEach</code>，而不是 <code>map</code>"
+          data-en="Use <code>forEach</code> instead of <code>map</code> when no return value is needed">操作数组不需要返回值时用 <code>forEach</code>，而不是 <code>map</code></li>
+      <li data-i18n data-zh="不在渲染函数中修改数据"
+          data-en="Never modify data inside render functions">不在渲染函数中修改数据</li>
+      <li data-i18n
+          data-zh="不在渲染函数中创建随机值（<code>Math.random()</code>、<code>Date.now()</code>）"
+          data-en="Never create random values in render functions (<code>Math.random()</code>, <code>Date.now()</code>)">不在渲染函数中创建随机值（<code>Math.random()</code>、<code>Date.now()</code>）</li>
+      <li data-i18n data-zh="不在渲染函数中发出网络请求"
+          data-en="Never make network requests inside render functions">不在渲染函数中发出网络请求</li>
+      <li data-i18n data-zh="不在渲染中创建新组件，否则 React 会反复销毁并重建子组件树"
+          data-en="Never create new components inside render — React will repeatedly destroy and recreate the subtree">不在渲染中创建新组件，否则 React 会反复销毁并重建子组件树</li>
+      <li data-i18n data-zh="属性每个单独一行，方便阅读"
+          data-en="Put each prop on its own line for readability">属性每个单独一行，方便阅读</li>
+    </ul>
+  </article>
 
-        </div>
-    </div>
+  <article class="card" id="styles">
+    <h2><span class="card-emoji">🎨</span><span data-i18n data-zh="样式与响应式" data-en="Styles &amp; Responsiveness">样式与响应式</span></h2>
+    <ul>
+      <li data-i18n data-zh="页面需覆盖常见移动端、平板和桌面尺寸"
+          data-en="Pages must work across common mobile, tablet, and desktop sizes">页面需覆盖常见移动端、平板和桌面尺寸</li>
+      <li data-i18n data-zh="长文本、超大数字、空数据、极端数据不能破坏布局"
+          data-en="Long text, large numbers, empty data, and extreme values must not break layouts">长文本、超大数字、空数据、极端数据不能破坏布局</li>
+      <li data-i18n data-zh="样式优先使用设计变量或统一约定，避免散落的魔法颜色和尺寸"
+          data-en="Use design tokens or shared conventions for styles; avoid scattered magic colors and sizes">样式优先使用设计变量或统一约定，避免散落的魔法颜色和尺寸</li>
+      <li data-i18n data-zh="交互状态需覆盖 hover、focus、active、disabled、loading"
+          data-en="Cover all interaction states: hover, focus, active, disabled, loading">交互状态需覆盖 hover、focus、active、disabled、loading</li>
+      <li data-i18n data-zh="组件应避免依赖外层页面的偶然样式"
+          data-en="Components should not depend on accidental styles from parent pages">组件应避免依赖外层页面的偶然样式</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            无论何时优先使用解构
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/deconstruct.js %}{% endhighlight %}
-        </div>
-    </div>
+  <article class="card" id="routing">
+    <h2><span class="card-emoji">🔐</span><span data-i18n data-zh="路由与权限" data-en="Routing &amp; Permissions">路由与权限</span></h2>
+    <ul>
+      <li data-i18n data-zh="页面权限、操作权限和数据权限需分别考虑"
+          data-en="Consider page permissions, action permissions, and data permissions separately">页面权限、操作权限和数据权限需分别考虑</li>
+      <li data-i18n data-zh="直接访问 URL、刷新页面、登录过期、权限变化时都应有合理兜底"
+          data-en="Handle direct URL access, page refresh, session expiry, and permission changes gracefully">直接访问 URL、刷新页面、登录过期、权限变化时都应有合理兜底</li>
+      <li data-i18n data-zh="路由参数需要校验，不要默认认为参数一定合法"
+          data-en="Validate route params — never assume they are valid">路由参数需要校验，不要默认认为参数一定合法</li>
+      <li data-i18n data-zh="未授权、无数据、资源不存在应展示不同状态"
+          data-en="Show distinct states for: unauthorized, no data, resource not found">未授权、无数据、资源不存在应展示不同状态</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            不要在一个语句中同时处理同步数据和异步数据
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/async-statement.js %}{% endhighlight %}
-        </div>
-    </div>
+  <article class="card" id="performance">
+    <h2><span class="card-emoji">⚡</span><span data-i18n data-zh="性能" data-en="Performance">性能</span></h2>
+    <ul>
+      <li data-i18n
+          data-zh="避免大数组进行查询等运算，用 <code>Object</code>、<code>Map</code> 或 <code>Set</code> 优化"
+          data-en="Avoid querying large arrays; use <code>Object</code>, <code>Map</code>, or <code>Set</code> instead">避免大数组进行查询等运算，用 <code>Object</code>、<code>Map</code> 或 <code>Set</code> 优化</li>
+      <li data-i18n data-zh="避免大量数据递归"
+          data-en="Avoid deep recursion over large datasets">避免大量数据递归</li>
+      <li data-i18n data-zh="程序要懒惰，不到最后一刻不获取或处理数据"
+          data-en="Be lazy — don't fetch or process data until necessary">程序要懒惰，不到最后一刻不获取或处理数据</li>
+      <li data-i18n data-zh="没有明确性能瓶颈时，不做过早优化"
+          data-en="Don't optimize without a confirmed performance bottleneck">没有明确性能瓶颈时，不做过早优化</li>
+      <li data-i18n data-zh="图片/资源懒加载，避免首屏加载过多资源"
+          data-en="Lazy-load images and resources to reduce initial page load">图片/资源懒加载，避免首屏加载过多资源</li>
+      <li data-i18n data-zh="对大组件、重计算、长列表和大型依赖进行按需加载或缓存优化"
+          data-en="Use code splitting, memoization, and virtualization for heavy components, lists, and large dependencies">对大组件、重计算、长列表和大型依赖进行按需加载或缓存优化</li>
+      <li data-i18n data-zh="控制首屏资源体积，关注构建产物、依赖体积和关键路径资源"
+          data-en="Control initial bundle size; monitor build output, dependency size, and critical path resources">控制首屏资源体积，关注构建产物、依赖体积和关键路径资源</li>
+      <li data-i18n data-zh="避免在循环中频繁操作 DOM 或触发重排"
+          data-en="Avoid frequent DOM operations or layout thrashing inside loops">避免在循环中频繁操作 DOM 或触发重排</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            函数返回值要，清楚，明了，统一，千万不要出现在一个函数中存在异步和同步两种结果
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/async-fun.js %}{% endhighlight %}
-        </div>
-    </div>
+  <article class="card" id="security">
+    <h2><span class="card-emoji">🛡️</span><span data-i18n data-zh="安全与健壮性" data-en="Security &amp; Robustness">安全与健壮性</span></h2>
+    <ul>
+      <li data-i18n data-zh="所有用户输入和外部输入都应基于业务规则进行验证"
+          data-en="Validate all user and external input against business rules">所有用户输入和外部输入都应基于业务规则进行验证</li>
+      <li data-i18n data-zh="输入框根据业务添加长度、格式、范围、必填等限制"
+          data-en="Add length, format, range, and required constraints to inputs">输入框根据业务添加长度、格式、范围、必填等限制</li>
+      <li data-i18n data-zh="HTML 标签和属性操作必须限定/过滤传入变量值，防止 XSS"
+          data-en="Sanitize/filter values passed to HTML tags and attributes to prevent XSS">HTML 标签和属性操作必须限定/过滤传入变量值，防止 XSS</li>
+      <li data-i18n
+          data-zh="不在前端存储敏感信息（token 存 httpOnly cookie，而非 localStorage）"
+          data-en="Never store sensitive data on the frontend (store tokens in httpOnly cookies, not localStorage)">不在前端存储敏感信息（token 存 httpOnly cookie，而非 localStorage）</li>
+      <li data-i18n
+          data-zh="定期检查第三方依赖安全漏洞（<code>npm audit</code>）"
+          data-en="Regularly audit third-party dependencies for vulnerabilities (<code>npm audit</code>)">定期检查第三方依赖安全漏洞（<code>npm audit</code>）</li>
+      <li data-i18n data-zh="定时器和事件监听记得清除，否则可能引发内存泄漏"
+          data-en="Always clear timers and event listeners to prevent memory leaks">定时器和事件监听记得清除，否则可能引发内存泄漏</li>
+      <li data-i18n data-zh="注重事物生命周期：初始化时创建，结束前清理"
+          data-en="Follow lifecycle discipline: create on init, clean up before destroy">注重事物生命周期：初始化时创建，结束前清理</li>
+      <li data-i18n data-zh="解决 bug 要分析根本原因，而不只是修复表象"
+          data-en="Fix bugs by addressing root causes, not just symptoms">解决 bug 要分析根本原因，而不只是修复表象</li>
+      <li data-i18n data-zh="对 API 调用保持敏感，尤其是低频调用变为高频调用的场景"
+          data-en="Be alert to API call frequency changes, especially low-frequency becoming high-frequency">对 API 调用保持敏感，尤其是低频调用变为高频调用的场景</li>
+    </ul>
+  </article>
 
+</section>
 
+<section class="checklist">
 
-    <div class="section" id="check-type">
-        <div class="col">
-            钩子函数中只写调用，而不写具体逻辑代码
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/hook-fun.js %}{% endhighlight %}
-        </div>
-    </div>
+  <article class="card" id="forms">
+    <h2><span class="card-emoji">📝</span><span data-i18n data-zh="表单与交互" data-en="Forms &amp; Interaction">表单与交互</span></h2>
+    <ul>
+      <li data-i18n data-zh="表单校验规则应与后端约束保持一致"
+          data-en="Frontend validation rules must match backend constraints">表单校验规则应与后端约束保持一致</li>
+      <li data-i18n data-zh="提交按钮应处理提交中、成功、失败和防重复提交状态"
+          data-en="Submit buttons must handle: submitting, success, failure, and duplicate submission prevention">提交按钮应处理提交中、成功、失败和防重复提交状态</li>
+      <li data-i18n data-zh="表单错误应定位到具体字段，而不是只给出笼统提示"
+          data-en="Form errors should point to specific fields, not just show a generic message">表单错误应定位到具体字段，而不是只给出笼统提示</li>
+      <li data-i18n data-zh="危险操作需要二次确认或可撤销机制"
+          data-en="Dangerous actions require confirmation dialogs or undo mechanisms">危险操作需要二次确认或可撤销机制</li>
+      <li data-i18n data-zh="用户操作后应有明确反馈，避免用户不知道操作是否生效"
+          data-en="Users should receive clear feedback after every action">用户操作后应有明确反馈，避免用户不知道操作是否生效</li>
+    </ul>
+  </article>
 
+  <article class="card" id="errors">
+    <h2><span class="card-emoji">🚨</span><span data-i18n data-zh="错误处理" data-en="Error Handling">错误处理</span></h2>
+    <ul>
+      <li data-i18n data-zh="为关键业务模块添加错误边界，避免局部错误导致整个页面崩溃"
+          data-en="Add error boundaries to critical modules to prevent local errors from crashing the whole page">为关键业务模块添加错误边界，避免局部错误导致整个页面崩溃</li>
+      <li data-i18n data-zh="接入错误上报系统，确保线上异常可被感知和追踪"
+          data-en="Integrate an error reporting system so production exceptions are visible and traceable">接入错误上报系统，确保线上异常可被感知和追踪</li>
+      <li data-i18n data-zh="捕获错误时保留必要上下文：接口、参数、用户操作路径和环境信息"
+          data-en="Preserve context when catching errors: endpoint, params, user action path, environment">捕获错误时保留必要上下文：接口、参数、用户操作路径和环境信息</li>
+      <li data-i18n data-zh="不要吞掉异常，无法处理的错误应继续抛出或进入统一错误处理"
+          data-en="Never swallow exceptions — unhandled errors should be rethrown or routed to a central handler">不要吞掉异常，无法处理的错误应继续抛出或进入统一错误处理</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            不要扩大代码的影响
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="testing">
+    <h2><span class="card-emoji">🧪</span><span data-i18n data-zh="测试" data-en="Testing">测试</span></h2>
+    <ul>
+      <li data-i18n data-zh="核心业务逻辑必须有单元测试覆盖"
+          data-en="Core business logic must have unit test coverage">核心业务逻辑必须有单元测试覆盖</li>
+      <li data-i18n data-zh="组件测试关注行为而非实现细节"
+          data-en="Component tests should focus on behavior, not implementation details">组件测试关注行为而非实现细节</li>
+      <li data-i18n data-zh="关键业务流程需要集成测试或端到端测试覆盖"
+          data-en="Critical flows need integration or end-to-end test coverage">关键业务流程需要集成测试或端到端测试覆盖</li>
+      <li data-i18n data-zh="修复 bug 时优先补充能复现该问题的测试"
+          data-en="When fixing a bug, write a test that reproduces it first">修复 bug 时优先补充能复现该问题的测试</li>
+      <li data-i18n data-zh="测试需覆盖正常、异常、边界、权限和空数据场景"
+          data-en="Tests must cover: normal, error, edge, permission, and empty-data scenarios">测试需覆盖正常、异常、边界、权限和空数据场景</li>
+    </ul>
+  </article>
 
+  <article class="card" id="a11y">
+    <h2><span class="card-emoji">♿</span><span data-i18n data-zh="无障碍访问（a11y）" data-en="Accessibility (a11y)">无障碍访问（a11y）</span></h2>
+    <ul>
+      <li data-i18n
+          data-zh="交互元素（按钮、链接）必须有可读文本或 <code>aria-label</code>"
+          data-en="Interactive elements (buttons, links) must have readable text or <code>aria-label</code>">交互元素（按钮、链接）必须有可读文本或 <code>aria-label</code></li>
+      <li data-i18n
+          data-zh="图片必须有 <code>alt</code> 属性"
+          data-en="Images must have <code>alt</code> attributes">图片必须有 <code>alt</code> 属性</li>
+      <li data-i18n
+          data-zh="表单控件必须有对应的 <code>label</code>"
+          data-en="Form controls must have associated <code>label</code> elements">表单控件必须有对应的 <code>label</code></li>
+      <li data-i18n data-zh="页面可通过键盘完成核心操作"
+          data-en="Core operations must be completable via keyboard">页面可通过键盘完成核心操作</li>
+      <li data-i18n data-zh="文本、背景、状态色需满足基本对比度要求"
+          data-en="Text, backgrounds, and status colors must meet minimum contrast requirements">文本、背景、状态色需满足基本对比度要求</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            不要轻易的封装重复的业务代码，有可能是一种巧合而并非重复
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="ux">
+    <h2><span class="card-emoji">💡</span><span data-i18n data-zh="用户体验" data-en="User Experience">用户体验</span></h2>
+    <ul>
+      <li data-i18n data-zh="提示信息使用陈述句，不加语气助词和网络用语"
+          data-en="Use declarative sentences in user-facing messages; avoid filler words and slang">提示信息使用陈述句，不加语气助词和网络用语</li>
+      <li data-i18n data-zh="错误提示应说明发生了什么，以及用户下一步可以做什么"
+          data-en="Error messages should explain what happened and what the user can do next">错误提示应说明发生了什么，以及用户下一步可以做什么</li>
+      <li data-i18n data-zh="空状态需给出明确含义和可执行的下一步"
+          data-en="Empty states must provide clear meaning and an actionable next step">空状态需给出明确含义和可执行的下一步</li>
+      <li data-i18n data-zh="关键流程避免让用户重复输入已提供过的信息"
+          data-en="Avoid asking users to re-enter information they've already provided">关键流程避免让用户重复输入已提供过的信息</li>
+      <li data-i18n data-zh="删除、离开、覆盖、提交等不可逆操作应避免误触"
+          data-en="Irreversible actions (delete, leave, overwrite, submit) must be protected against accidental triggers">删除、离开、覆盖、提交等不可逆操作应避免误触</li>
+    </ul>
+  </article>
 
+</section>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            注释要有侧重点，数据结构的注释是非常重要的，其次是不合理的业务逻辑然后才是正常函数
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/note.js %}{% endhighlight %}
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            变量命名缩写必须能够的到团队认可，否则使用完整单词
-        </div>
-        <div class="col">
-            {% highlight javascript %}{% include javascripts/var.js %}{% endhighlight %}
-        </div>
-    </div>
+<section class="checklist">
 
-    <div class="section" id="check-type">
-        <div class="col">
-            常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="quality">
+    <h2><span class="card-emoji">✨</span><span data-i18n data-zh="代码质量" data-en="Code Quality">代码质量</span></h2>
+    <ul>
+      <li data-i18n data-zh="避免魔法数字，用命名常量替代"
+          data-en="Replace magic numbers with named constants">避免魔法数字，用命名常量替代</li>
+      <li data-i18n data-zh="PR 提交前自我 review 一遍，不要依赖他人发现低级错误"
+          data-en="Self-review your PR before submitting — don't rely on others to catch basic mistakes">PR 提交前自我 review 一遍，不要依赖他人发现低级错误</li>
+      <li data-i18n
+          data-zh="优先使用 <code>const</code>，直到变量需要改变时再用 <code>let</code>"
+          data-en="Default to <code>const</code>; only use <code>let</code> when reassignment is needed">优先使用 <code>const</code>，直到变量需要改变时再用 <code>let</code></li>
+      <li data-i18n data-zh="解构优先用于提升可读性，不为形式牺牲可读性"
+          data-en="Use destructuring to improve readability, not for style's sake">解构优先用于提升可读性，不为形式牺牲可读性</li>
+      <li data-i18n data-zh="注释侧重 WHY：数据结构设计 &gt; 不合理的业务逻辑 &gt; 普通函数；不在注释中包含侮辱性词汇"
+          data-en="Comments should explain WHY: data structure design &gt; non-obvious business logic &gt; regular functions; no insults in comments">注释侧重 WHY：数据结构设计 &gt; 不合理的业务逻辑 &gt; 普通函数；不在注释中包含侮辱性词汇</li>
+      <li data-i18n data-zh="用删除代替注释来精简代码"
+          data-en="Delete unused code instead of commenting it out">用删除代替注释来精简代码</li>
+      <li data-i18n data-zh="尽量不使用默认导出"
+          data-en="Avoid default exports">尽量不使用默认导出</li>
+      <li data-i18n data-zh="减少不必要的依赖引入，开源库尽量只引入所需部分"
+          data-en="Minimize unnecessary imports; use tree-shakeable imports from large libraries">减少不必要的依赖引入，开源库尽量只引入所需部分</li>
+      <li data-i18n
+          data-zh="<code>package.json</code> 依赖项建议锁定版本号，避免使用 <code>^</code> <code>~</code>"
+          data-en="Pin dependency versions in <code>package.json</code>; avoid <code>^</code> and <code>~</code>"><code>package.json</code> 依赖项建议锁定版本号，避免使用 <code>^</code> <code>~</code></li>
+      <li data-i18n data-zh="对引入的开源工具浅封装一层，降低未来替换成本"
+          data-en="Wrap third-party tools in a thin abstraction layer to reduce future migration cost">对引入的开源工具浅封装一层，降低未来替换成本</li>
+      <li data-i18n data-zh="不要轻易复制代码；必须复制时手敲一遍，确保每行都理解"
+          data-en="Don't copy code carelessly; if you must, type it out to understand every line">不要轻易复制代码；必须复制时手敲一遍，确保每行都理解</li>
+      <li data-i18n data-zh="使用更新的语言特性提升程序健壮性"
+          data-en="Use modern language features to improve robustness">使用更新的语言特性提升程序健壮性</li>
+      <li data-i18n data-zh="单文件行数应有限制（由团队自行定制）"
+          data-en="Enforce a per-file line limit (team-defined)">单文件行数应有限制（由团队自行定制）</li>
+      <li data-i18n data-zh="业务功能不要依赖语言特性的隐式行为"
+          data-en="Business logic must not rely on implicit language behavior">业务功能不要依赖语言特性的隐式行为</li>
+    </ul>
+  </article>
 
+  <article class="card" id="engineering">
+    <h2><span class="card-emoji">🛠️</span><span data-i18n data-zh="工程化" data-en="Engineering">工程化</span></h2>
+    <ul>
+      <li data-i18n data-zh="提交前通过格式化、Lint、类型检查和必要测试"
+          data-en="Pass formatting, linting, type checking, and relevant tests before committing">提交前通过格式化、Lint、类型检查和必要测试</li>
+      <li data-i18n data-zh="依赖变更需说明原因，并关注体积、安全性、维护状态和许可证"
+          data-en="Explain dependency changes and check size, security, maintenance status, and license">依赖变更需说明原因，并关注体积、安全性、维护状态和许可证</li>
+      <li data-i18n data-zh="环境变量、构建配置、代理配置不能与本地环境强绑定"
+          data-en="Environment variables, build config, and proxy settings must not be tied to local environments">环境变量、构建配置、代理配置不能与本地环境强绑定</li>
+      <li data-i18n data-zh="新增脚本、配置或目录时，命名应与现有项目结构保持一致"
+          data-en="New scripts, configs, and directories must follow existing project naming conventions">新增脚本、配置或目录时，命名应与现有项目结构保持一致</li>
+      <li data-i18n data-zh="自动化校验尽量在 CI 中完成，避免只依赖人工检查"
+          data-en="Automate checks in CI rather than relying on manual review">自动化校验尽量在 CI 中完成，避免只依赖人工检查</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            函数命名使用 动词 + 名词的形式，如 发送短信 sendSms，如果是在模板或者 jsx 中，使用 handle + 名词 + 动词，如 处理短信发送，handle 也有具柄的意义
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            函数参数多于 3 个时使用对象传参数
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            避免使用布尔参数，如果有需要使用对象传递参数
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="i18n">
+    <h2><span class="card-emoji">🌐</span><span data-i18n data-zh="国际化（i18n）" data-en="Internationalization (i18n)">国际化（i18n）</span></h2>
+    <ul>
+      <li data-i18n data-zh="文案不硬编码，统一走翻译函数"
+          data-en="Never hardcode copy — route all strings through a translation function">文案不硬编码，统一走翻译函数</li>
+      <li data-i18n data-zh="日期、数字、货币格式根据 locale 处理，不手动拼接"
+          data-en="Format dates, numbers, and currencies according to locale; don't concatenate manually">日期、数字、货币格式根据 locale 处理，不手动拼接</li>
+      <li data-i18n data-zh="避免拼接字符串构造句子，语序因语言而异"
+          data-en="Avoid constructing sentences by string concatenation — word order varies by language">避免拼接字符串构造句子，语序因语言而异</li>
+      <li data-i18n data-zh="图片、图标中不嵌入文字"
+          data-en="Don't embed text in images or icons">图片、图标中不嵌入文字</li>
+    </ul>
+  </article>
 
+</section>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            尽量不要使用默认导出
-        </div>
-        <div class="col">
-        </div>
-    </div>
+<section class="checklist">
 
-    <div class="section" id="check-type">
-        <div class="col">
-            通过代码上通过 for， by， from， when，then 等单词添加函数的意图，提供有用的额外信息
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="monitoring">
+    <h2><span class="card-emoji">📈</span><span data-i18n data-zh="日志与监控" data-en="Logging &amp; Monitoring">日志与监控</span></h2>
+    <ul>
+      <li data-i18n data-zh="关键业务操作（支付、提交、权限变更）应有埋点"
+          data-en="Key business actions (payments, submissions, permission changes) must be tracked">关键业务操作（支付、提交、权限变更）应有埋点</li>
+      <li data-i18n data-zh="生产环境不输出敏感信息到 console"
+          data-en="Never log sensitive information to the console in production">生产环境不输出敏感信息到 console</li>
+      <li data-i18n data-zh="前端性能指标（LCP、FID、CLS）应可观测"
+          data-en="Frontend performance metrics (LCP, FID, CLS) should be observable">前端性能指标（LCP、FID、CLS）应可观测</li>
+      <li data-i18n data-zh="错误上报应区分业务异常和程序异常，便于分类处理"
+          data-en="Error reports should distinguish business exceptions from program exceptions">错误上报应区分业务异常和程序异常，便于分类处理</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            减少没有必要的数据类型默认转换与强制转换（分析为什么当前数据不是该数据类型，而并不是进行转换）
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="deps">
+    <h2><span class="card-emoji">📦</span><span data-i18n data-zh="依赖管理" data-en="Dependency Management">依赖管理</span></h2>
+    <ul>
+      <li data-i18n data-zh="引入新依赖前先确认项目中是否已有等价能力"
+          data-en="Before adding a dependency, check if the project already has equivalent capability">引入新依赖前先确认项目中是否已有等价能力</li>
+      <li data-i18n data-zh="避免引入已停止维护的库"
+          data-en="Avoid libraries that are no longer maintained">避免引入已停止维护的库</li>
+      <li data-i18n data-zh="注意 license 兼容性（GPL 类库不能随意商用）"
+          data-en="Check license compatibility (GPL libraries cannot be used freely in commercial products)">注意 license 兼容性（GPL 类库不能随意商用）</li>
+      <li data-i18n data-zh="大体积依赖优先按需引入，避免全量打包"
+          data-en="Prefer tree-shakeable imports for large dependencies to avoid bundling everything">大体积依赖优先按需引入，避免全量打包</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            考虑在布尔运算的过程中，false 0 '' 是否和 null，undefined 意义相同
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="a11y-extra">
+    <h2><span class="card-emoji">🦮</span><span data-i18n data-zh="可访问性补充" data-en="Accessibility Supplement">可访问性补充</span></h2>
+    <ul>
+      <li data-i18n
+          data-zh="动态内容变化应通知屏幕阅读器（<code>aria-live</code>）"
+          data-en="Dynamic content changes should notify screen readers via <code>aria-live</code>">动态内容变化应通知屏幕阅读器（<code>aria-live</code>）</li>
+      <li data-i18n data-zh="模态框打开时焦点应移入，关闭后应还原到触发元素"
+          data-en="When a modal opens, focus should move into it; when it closes, focus should return to the trigger">模态框打开时焦点应移入，关闭后应还原到触发元素</li>
+      <li data-i18n data-zh="颜色不能作为传递信息的唯一手段"
+          data-en="Color must not be the only means of conveying information">颜色不能作为传递信息的唯一手段</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            在进行判断的过程中，先判断范围大的，在进行小范围判断，如: 权限判断 -> 数据权限判断 -> 业务判断
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="docs">
+    <h2><span class="card-emoji">📚</span><span data-i18n data-zh="文档与协作" data-en="Documentation &amp; Collaboration">文档与协作</span></h2>
+    <ul>
+      <li data-i18n data-zh="复杂组件/函数应有使用示例"
+          data-en="Complex components and functions should include usage examples">复杂组件/函数应有使用示例</li>
+      <li data-i18n data-zh="破坏性变更（接口、props、事件名）需在 PR 中明确标注"
+          data-en="Breaking changes (API, props, event names) must be explicitly noted in the PR">破坏性变更（接口、props、事件名）需在 PR 中明确标注</li>
+      <li data-i18n data-zh="公共 API 变更需同步通知依赖方"
+          data-en="Public API changes must be communicated to downstream consumers">公共 API 变更需同步通知依赖方</li>
+    </ul>
+  </article>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            在复杂布尔运算判断中添加括号，方便他人读懂
-        </div>
-        <div class="col">
-        </div>
-    </div>
+  <article class="card" id="pr">
+    <h2><span class="card-emoji">✅</span><span data-i18n data-zh="PR 自检" data-en="PR Self-Review">PR 自检</span></h2>
+    <ul>
+      <li data-i18n data-zh="是否处理了加载中、空数据、失败、重试和无权限状态"
+          data-en="Are loading, empty, failure, retry, and unauthorized states handled?">是否处理了加载中、空数据、失败、重试和无权限状态</li>
+      <li data-i18n data-zh="是否处理了异常输入、边界数据和接口字段缺失"
+          data-en="Are invalid inputs, edge cases, and missing API fields handled?">是否处理了异常输入、边界数据和接口字段缺失</li>
+      <li data-i18n data-zh="是否存在重复请求、重复渲染、内存泄漏或竞态问题"
+          data-en="Are there duplicate requests, redundant renders, memory leaks, or race conditions?">是否存在重复请求、重复渲染、内存泄漏或竞态问题</li>
+      <li data-i18n data-zh="是否影响已有页面、路由、权限、埋点、接口契约或缓存逻辑"
+          data-en="Does this affect existing pages, routes, permissions, analytics, API contracts, or caches?">是否影响已有页面、路由、权限、埋点、接口契约或缓存逻辑</li>
+      <li data-i18n data-zh="是否补充或更新了必要测试"
+          data-en="Are tests added or updated as needed?">是否补充或更新了必要测试</li>
+      <li data-i18n data-zh="是否需要更新文档、配置、示例或迁移说明"
+          data-en="Does documentation, config, examples, or migration notes need updating?">是否需要更新文档、配置、示例或迁移说明</li>
+    </ul>
+  </article>
 
+</section>
 
-    <div class="section" id="check-type">
-        <div class="col">
-            if， else， for， while， do， switch， try， catch， finally 等语句的执行语句部分无论多少都要加括号 { }
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-
-    <div class="section" id="check-type">
-        <div class="col">
-            轻易不要手动操作 DOM
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-
-    <div class="section" id="check-type">
-        <div class="col">
-            添加定时器，以及事件等，记住清除，否则可能引发内存泄漏或者错误
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-    <div class="section" id="check-type">
-        <div class="col">
-            处理异步时候，多考虑异常，同时 Promise 必须使用 resolve 或 reject 进入下一个状态，避免代码执行卡死
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-
-    <div class="section" id="check-type">
-        <div class="col">
-            使用删除而不是注释代码来精简代码
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-
-    <div class="section" id="check-type">
-        <div class="col">
-            避免大数组进行查询等运算，使用 Object、Map 或者 Set 进行优化
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-
-    <div class="section" id="check-type">
-        <div class="col">
-            避免大量数据进行递归
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-    <div class="section" id="check-type">
-        <div class="col">
-            除非有必要的性能要求，不要用奇技淫巧进行优化
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            HTML 标签和属性操作，必须限定/过滤传入变量值
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            属性一个一行，方便使用
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            永远不要在渲染函数中进行数据修改
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            永远不要在渲染函数中创建随机值（Math.random() Date.now()）
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            永远不要在渲染函数中发出网络请求
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            永远不要在渲染中创造新的组件，这将导致 React 反复销毁并重新创建子组件树
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            轻易不要复制代码，如果必需的话，请手敲一遍，确保需要执行的每一行代码都是可用的
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            结构的设计要尽量考虑向前兼容和以后的版本升级，并为某些未来可能的应用保留余地
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            解决 bug 不能只考虑 bug 本身，要分析产生的原因
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            不要在提示用户的信息的中添加语气助词以及网络用语，使用陈述句
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            不要在注释中包含侮辱性词汇
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            少引用不需要的代码，开源项目是否能够只引入一部分
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            建议不要在 package.json 依赖项中使用 ^ ~ 等，最好直接使用当前的版本号，以避免依赖项升级导致项目问题
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            尽量不使用行内样式，即使使用 props 传递，在一定范围内也要传递 class 类
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            注重语意，操作数组不需要返回值时使用 forEach，而不是 map，同时 map 会比 forEach 慢
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            多使用可以终止的循环，如 some，every，find 等（空数组使用 some 时返回 false，every 返回 true）
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            程序要懒惰，不到最后一刻绝对不去获取或者处理数据
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            不要使用 setTimeout 解决异步问题，这将会成为一个不易重现（更加复杂）的 bug
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            在符合逻辑的情况下，尽量大的提升系统的容错，增强健壮性
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            注重事物生命周期，严格遵循初始化时候创建，结束前清理
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            使用更新的语言特性提升程序健壮性
-        </div>
-        <div class="col">
-        </div>
-    </div>
-    <div class="section" id="check-type">
-        <div class="col">
-            单文件添加行数限制(需要由团队自行定制)
-        </div>
-        <div class="col">
-        </div>
-    </div>
-
-    <div class="section" id="check-type">
-        <div class="col">
-            业务功能不要依赖语言特性
-        </div>
-        <div class="col">
-        </div>
-    </div>
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var li = e.target.closest ? e.target.closest('.card li') : null;
+    if (!li || !li.parentElement || !li.parentElement.parentElement.classList.contains('card')) return;
+    if (e.target.tagName === 'A' || e.target.tagName === 'CODE') return;
+    li.classList.toggle('is-checked');
+  });
+})();
+</script>
