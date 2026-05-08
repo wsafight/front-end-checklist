@@ -618,7 +618,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   content: "";
   position: absolute;
   left: .15rem;
-  top: 1.1em;
+  top: calc(.65rem + .825em);
   transform: translateY(-50%);
   width: 6px;
   height: 6px;

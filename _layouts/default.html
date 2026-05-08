@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{{ site.description }}">
-        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="styles/style.css?v={{ site.time | date: '%s' }}">
 
         <title>{{ site.name }}</title>
     </head>
@@ -17,7 +17,7 @@
         <div class="search-wrap">
           <div class="search-inner">
             <div class="search-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
               <input type="search" id="searchInput" placeholder="搜索清单项…" data-i18n-ph data-ph-zh="搜索清单项…" data-ph-en="Search checklist…" aria-label="Search">
               <kbd>/</kbd>
             </div>
