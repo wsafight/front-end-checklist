@@ -1,5 +1,24 @@
 /* ========== showcase (skill in action) ========== */
 
+/* showcase page uses single-column layout (no TOC sidebar). */
+.page.showcase-page {
+  max-width: 1040px;
+  display: block;
+  padding: 2rem 1.25rem 4rem;
+}
+@media (min-width: 64em) {
+  .page.showcase-page {
+    display: block;
+    grid-template-columns: none;
+    padding: 2.5rem 2rem 5rem;
+  }
+}
+.showcase-page .content { min-width: 0; }
+
+/* The header "分类数" pill is only relevant on the homepage (needs .card to count).
+   Uses :has() (Safari 15.4+, Chrome 105+, Firefox 121+). */
+body:has(.showcase-page) [data-home-only] { display: none; }
+
 /* featured block on index.html */
 .skill-showcase {
   margin-top: 2rem;
