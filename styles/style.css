@@ -285,12 +285,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
-.stat-pill .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 8px rgba(52, 211, 153, .6);
-}
 a.stat-pill {
   color: rgba(255, 255, 255, .88);
   text-decoration: none;
