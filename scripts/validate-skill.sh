@@ -20,4 +20,7 @@ fail() { echo "validate-skill: $1" >&2; exit 1; }
 head -n 20 "$SKILL_MD" | grep -qE '^name:[[:space:]]*[^[:space:]]'        || fail "SKILL.md frontmatter missing 'name'"
 head -n 20 "$SKILL_MD" | grep -qE '^description:[[:space:]]*[^[:space:]]' || fail "SKILL.md frontmatter missing 'description'"
 
+# Dry-run the Cursor rule builder so awk frontmatter stripping breaks in CI, not at release time.
+bash "$ROOT/scripts/build-cursor-rule.sh" >/dev/null || fail "build-cursor-rule.sh failed"
+
 echo "validate-skill: ok"

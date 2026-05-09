@@ -19,10 +19,16 @@ jobs:
         id: ver
         run: |
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
-            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            version="${GITHUB_REF_NAME}"
           else
-            echo "version=dev-$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
+            version="dev-$(date -u +%Y%m%d%H%M%S)"
           fi
+          # Restrict to chars safe for sed, filenames, and URLs.
+          if ! printf '%s' "$version" | grep -Eq '^[A-Za-z0-9._-]+$'; then
+            echo "invalid version: $version" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Validate skill
         run: bash scripts/validate-skill.sh
@@ -36,7 +42,8 @@ jobs:
 
           # Skill tarball + zip (content only, not the frontend-checklist/ wrapper).
           tar -czf dist/frontend-checklist-skill.tar.gz -C skills/frontend-checklist .
-          (cd skills/frontend-checklist && zip -rq "$GITHUB_WORKSPACE/dist/frontend-checklist-skill.zip" .)
+          dist_abs="$PWD/dist"
+          (cd skills/frontend-checklist && zip -rq "$dist_abs/frontend-checklist-skill.zip" .)
 
           # Cursor rule. Codex uses the full skill tarball so references/ stays available.
           bash scripts/build-cursor-rule.sh > dist/frontend-checklist-cursor.mdc

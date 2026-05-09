@@ -8,10 +8,15 @@ param(
   [ValidateSet('claude','kiro','cursor','codex')]
   [string]$Tool = 'claude',
   [switch]$Local,
-  [switch]$Uninstall
+  [switch]$Uninstall,
+  [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
+# Suppress Invoke-WebRequest's progress bar — it slows downloads by up to 10x on PS 5.1.
+$ProgressPreference = 'SilentlyContinue'
+# Ensure Chinese hints render correctly in non-UTF-8 consoles.
+try { [Console]::OutputEncoding = [Text.Encoding]::UTF8 } catch { }
 $Version    = '__VERSION__'
 $Repo       = 'wsafight/front-end-checklist'
 $BaseUrl    = "https://github.com/$Repo/releases/download/$Version"
@@ -60,7 +65,19 @@ function Get-Verified {
   if ($expected -ne $actual) { throw "checksum mismatch for $Asset" }
 }
 
-function Install-Skill {
+function Test-SameVersion {
+  param([string]$Marker, [string[]]$Require = @())
+  if ($Force) { return $false }
+  if (-not (Test-Path $Marker)) { return $false }
+  if ((Get-Content $Marker -Raw).Trim() -ne $Version) { return $false }
+  foreach ($required in $Require) {
+    if (-not (Test-Path $required)) { return $false }
+  }
+  return $true
+}
+
+function Install-Tarball {
+  param([string[]]$RequireExtra = @())
   New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
   $script:backupTarget = $installPath
   if (Test-Path $installPath) {
@@ -72,37 +89,42 @@ function Install-Skill {
   New-Item -ItemType Directory -Force -Path $installPath | Out-Null
   tar -xzf $tar -C $installPath
   if (-not (Test-Path (Join-Path $installPath 'SKILL.md'))) { throw "archive missing SKILL.md" }
+  foreach ($extra in $RequireExtra) {
+    if (-not (Test-Path (Join-Path $installPath $extra))) { throw "archive missing $extra" }
+  }
+  Set-Content -Path (Join-Path $installPath '.version') -Value $Version -NoNewline
+}
+
+function Install-Skill {
+  if (Test-SameVersion (Join-Path $installPath '.version') @((Join-Path $installPath 'SKILL.md'))) {
+    Write-Host "OK $Tool`: already at $Version, skipping (use -Force to reinstall)" -ForegroundColor Green
+    return
+  }
+  Install-Tarball
   Write-Host "OK $Tool`: installed to $installPath" -ForegroundColor Green
 }
 
 function Install-Cursor {
   New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
   $target = Join-Path $targetDir 'frontend-checklist.mdc'
+  $versionFile = "$target.version"
+  if (Test-SameVersion $versionFile @($target)) {
+    Write-Host "OK Cursor: already at $Version, skipping (use -Force to reinstall)" -ForegroundColor Green
+    return
+  }
   $download = Join-Path $tmp 'frontend-checklist.mdc'
-  $script:backupTarget = $target
   Get-Verified -Asset $AssetCursor -Dest $download
+  $script:backupTarget = $target
   if (Test-Path $target) {
     $script:backup = "$target.bak." + [DateTimeOffset]::Now.ToUnixTimeSeconds()
     Move-Item $target $script:backup
   }
   Move-Item $download $target
+  Set-Content -Path $versionFile -Value $Version -NoNewline
   Write-Host "OK Cursor: rule installed" -ForegroundColor Green
 }
 
-function Install-Codex {
-  New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
-  $script:backupTarget = $installPath
-  if (Test-Path $installPath) {
-    $script:backup = "$installPath.bak." + [DateTimeOffset]::Now.ToUnixTimeSeconds()
-    Move-Item $installPath $script:backup
-  }
-  $tar = Join-Path $tmp 'skill.tar.gz'
-  Get-Verified -Asset $AssetTar -Dest $tar
-  New-Item -ItemType Directory -Force -Path $installPath | Out-Null
-  tar -xzf $tar -C $installPath
-  if (-not (Test-Path (Join-Path $installPath 'SKILL.md'))) { throw "archive missing SKILL.md" }
-  if (-not (Test-Path (Join-Path $installPath 'references\checklist.md'))) { throw "archive missing references/checklist.md" }
-
+function Update-CodexAgents {
   $agentsFile = if ($Local) { Join-Path (Get-Location).Path 'AGENTS.md' } else { Join-Path $HOME '.codex\AGENTS.md' }
   New-Item -ItemType Directory -Force -Path (Split-Path $agentsFile) | Out-Null
   if (-not (Test-Path $agentsFile)) { New-Item -ItemType File -Path $agentsFile | Out-Null }
@@ -111,6 +133,16 @@ function Install-Codex {
   $block = "`n<!-- BEGIN frontend-checklist -->`n@$installPath\SKILL.md`n<!-- END frontend-checklist -->`n"
   Set-Content -Path $agentsFile -Value ($content + $block) -NoNewline
   Write-Host "OK Codex: updated $agentsFile" -ForegroundColor Green
+}
+
+function Install-Codex {
+  if (Test-SameVersion (Join-Path $installPath '.version') @((Join-Path $installPath 'SKILL.md'), (Join-Path $installPath 'references\checklist.md'))) {
+    Update-CodexAgents
+    Write-Host "OK Codex: already at $Version, skipping archive reinstall (use -Force to reinstall)" -ForegroundColor Green
+    return
+  }
+  Install-Tarball -RequireExtra @('references\checklist.md')
+  Update-CodexAgents
 }
 
 function Uninstall-All {
@@ -127,6 +159,7 @@ function Uninstall-All {
     'cursor' {
       $rule = Join-Path $targetDir 'frontend-checklist.mdc'
       if (Test-Path $rule) { Remove-Item -Force $rule }
+      if (Test-Path "$rule.version") { Remove-Item -Force "$rule.version" }
     }
     default {
       if (Test-Path $installPath) { Remove-Item -Recurse -Force $installPath }

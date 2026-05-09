@@ -16,19 +16,21 @@ BASE_URL="https://github.com/${REPO}/releases/download/${VERSION}"
 TOOL="claude"
 SCOPE="global"
 ACTION="install"
+FORCE=0
 for arg in "$@"; do
   case "$arg" in
     claude|kiro|cursor|codex) TOOL="$arg" ;;
     --local)     SCOPE="local" ;;
     --global)    SCOPE="global" ;;
     --uninstall) ACTION="uninstall" ;;
+    --force|-f)  FORCE=1 ;;
     -h|--help)
       cat <<'EOF'
 Frontend Checklist Skill installer.
 Usage:
-  curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- <tool> [--local] [--uninstall]
+  curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- <tool> [--local] [--uninstall] [--force]
 Tools:   claude | kiro | cursor | codex
-Default: claude, global install.
+Default: claude, global install. --force reinstalls even if same version is present.
 EOF
       exit 0 ;;
     *) echo "unknown arg: $arg" >&2; exit 2 ;;
@@ -56,6 +58,7 @@ resolve_dir() {
     kiro)   base=".kiro/skills" ;;
     cursor) base=".cursor/rules" ;;
     codex)  base=".frontend-checklist" ;;
+    *)      err "unknown tool: $TOOL"; exit 2 ;;
   esac
   if [ "$SCOPE" = "global" ]; then printf '%s/%s\n' "$HOME" "$base"
   else printf '%s/%s\n' "$PWD" "$base"
@@ -70,25 +73,31 @@ BACKUP_TARGET=""
 cleanup() {
   status=$?
   [ -n "$TMP" ] && rm -rf "$TMP"
-  if [ $status -ne 0 ] && [ -n "$BACKUP" ] && [ -e "$BACKUP" ]; then
-    rm -rf "$BACKUP_TARGET" 2>/dev/null || true
-    mv "$BACKUP" "$BACKUP_TARGET"
-    err "rolled back to previous version"
-  elif [ $status -ne 0 ] && [ -n "$BACKUP_TARGET" ]; then
-    rm -rf "$BACKUP_TARGET" 2>/dev/null || true
-  elif [ -n "$BACKUP" ] && [ -e "$BACKUP" ]; then
-    rm -rf "$BACKUP" 2>/dev/null || true
+  if [ $status -ne 0 ]; then
+    # Failure path: drop half-written target, then restore backup if any.
+    [ -n "$BACKUP_TARGET" ] && rm -rf "$BACKUP_TARGET" 2>/dev/null || true
+    if [ -n "$BACKUP" ] && [ -e "$BACKUP" ]; then
+      mv "$BACKUP" "$BACKUP_TARGET"
+      err "rolled back to previous version"
+    fi
+  else
+    # Success path: discard stale backup.
+    [ -n "$BACKUP" ] && [ -e "$BACKUP" ] && rm -rf "$BACKUP"
   fi
   exit $status
 }
 trap cleanup EXIT INT TERM
 
-# Download an asset + verify against sha256sums.txt.
+ensure_sums() {
+  [ -f "$TMP/sums" ] && return
+  curl -fsSL --retry 3 --retry-delay 1 "${BASE_URL}/${ASSET_SUMS}" -o "$TMP/sums"
+}
+
 fetch_verified() {
   asset="$1"; dest="$2"
   curl -fsSL --retry 3 --retry-delay 1 "${BASE_URL}/${asset}" -o "$dest"
-  curl -fsSL --retry 3 --retry-delay 1 "${BASE_URL}/${ASSET_SUMS}" -o "$TMP/sums"
-  expected=$(awk -v asset="$asset" '$2 == asset { print $1; exit }' "$TMP/sums")
+  ensure_sums
+  expected=$(awk -v asset="$asset" '$2 == asset || $2 == "*" asset { print $1; exit }' "$TMP/sums")
   [ -n "$expected" ] || { err "checksum not found for $asset"; return 1; }
   actual=$(sha256 "$dest")
   if [ "$expected" != "$actual" ]; then
@@ -99,8 +108,8 @@ fetch_verified() {
   fi
 }
 
-# --- Codex path: install full skill and merge/remove a marked block in AGENTS.md ---
-codex_install() {
+# Download tarball, back up existing install, extract, verify required files.
+install_tarball() {
   INSTALL_PATH="$TARGET_DIR/frontend-checklist"
   BACKUP_TARGET="$INSTALL_PATH"
   mkdir -p "$TARGET_DIR"
@@ -112,8 +121,27 @@ codex_install() {
   mkdir -p "$INSTALL_PATH"
   tar -xzf "$TMP/skill.tar.gz" -C "$INSTALL_PATH"
   [ -f "$INSTALL_PATH/SKILL.md" ] || { err "archive missing SKILL.md"; exit 1; }
-  [ -f "$INSTALL_PATH/references/checklist.md" ] || { err "archive missing references/checklist.md"; exit 1; }
+  for extra in "$@"; do
+    [ -f "$INSTALL_PATH/$extra" ] || { err "archive missing $extra"; exit 1; }
+  done
+  printf '%s\n' "$VERSION" > "$INSTALL_PATH/.version"
+}
 
+# Skip reinstall if target already has the same version. Cursor stores version in a
+# sibling .version file since the rule itself is a single .mdc.
+is_same_version() {
+  [ "$FORCE" = "1" ] && return 1
+  marker="$1"
+  shift
+  [ -f "$marker" ] || return 1
+  [ "$(cat "$marker" 2>/dev/null)" = "$VERSION" ] || return 1
+  for required in "$@"; do
+    [ -f "$required" ] || return 1
+  done
+  return 0
+}
+
+update_codex_agents() {
   agents_file="${AGENTS_FILE:-$PWD/AGENTS.md}"
   [ "$SCOPE" = "global" ] && agents_file="$HOME/.codex/AGENTS.md" && mkdir -p "$HOME/.codex"
   touch "$agents_file"
@@ -131,6 +159,18 @@ codex_install() {
     printf '<!-- END frontend-checklist -->\n'
   } > "$agents_file"
   say "✓ Codex: updated $agents_file"
+}
+
+# --- Codex path: install full skill and merge/remove a marked block in AGENTS.md ---
+codex_install() {
+  INSTALL_PATH="$TARGET_DIR/frontend-checklist"
+  if is_same_version "$INSTALL_PATH/.version" "$INSTALL_PATH/SKILL.md" "$INSTALL_PATH/references/checklist.md"; then
+    update_codex_agents
+    say "✓ Codex: already at $VERSION, skipping archive reinstall (use --force to reinstall)"
+    return
+  fi
+  install_tarball "references/checklist.md"
+  update_codex_agents
 }
 
 codex_uninstall() {
@@ -152,19 +192,25 @@ codex_uninstall() {
 
 # --- Cursor path: single .mdc file ---
 cursor_install() {
-  BACKUP_TARGET="$TARGET_DIR/frontend-checklist.mdc"
+  version_file="$TARGET_DIR/frontend-checklist.mdc.version"
+  if is_same_version "$version_file" "$TARGET_DIR/frontend-checklist.mdc"; then
+    say "✓ Cursor: already at $VERSION, skipping (use --force to reinstall)"
+    return
+  fi
   mkdir -p "$TARGET_DIR"
   fetch_verified "$ASSET_CURSOR" "$TMP/frontend-checklist.mdc"
+  BACKUP_TARGET="$TARGET_DIR/frontend-checklist.mdc"
   if [ -f "$TARGET_DIR/frontend-checklist.mdc" ]; then
     BACKUP="$TARGET_DIR/frontend-checklist.mdc.bak.$(date +%s)"
     mv "$TARGET_DIR/frontend-checklist.mdc" "$BACKUP"
   fi
   mv "$TMP/frontend-checklist.mdc" "$TARGET_DIR/frontend-checklist.mdc"
+  printf '%s\n' "$VERSION" > "$version_file"
   say "✓ Cursor: installed rule to $TARGET_DIR/frontend-checklist.mdc"
 }
 
 cursor_uninstall() {
-  rm -f "$TARGET_DIR/frontend-checklist.mdc"
+  rm -f "$TARGET_DIR/frontend-checklist.mdc" "$TARGET_DIR/frontend-checklist.mdc.version"
   # Only remove directory if we created it and it's now empty.
   rmdir "$TARGET_DIR" 2>/dev/null || true
   say "✓ Cursor: removed rule file"
@@ -172,29 +218,20 @@ cursor_uninstall() {
 
 # --- Claude / Kiro path: unpack tarball into skills dir ---
 skill_install() {
-  INSTALL_PATH="$TARGET_DIR/frontend-checklist"
-  BACKUP_TARGET="$INSTALL_PATH"
-  mkdir -p "$TARGET_DIR"
-  if [ -d "$INSTALL_PATH" ]; then
-    BACKUP="${INSTALL_PATH}.bak.$(date +%s)"
-    mv "$INSTALL_PATH" "$BACKUP"
+  if is_same_version "$TARGET_DIR/frontend-checklist/.version" "$TARGET_DIR/frontend-checklist/SKILL.md"; then
+    say "✓ ${TOOL}: already at $VERSION, skipping (use --force to reinstall)"
+    return
   fi
-  fetch_verified "$ASSET_TARBALL" "$TMP/skill.tar.gz"
-  mkdir -p "$INSTALL_PATH"
-  tar -xzf "$TMP/skill.tar.gz" -C "$INSTALL_PATH"
-  [ -f "$INSTALL_PATH/SKILL.md" ] || { err "archive missing SKILL.md"; exit 1; }
+  install_tarball
   say "✓ ${TOOL}: installed to $INSTALL_PATH"
 }
 
 skill_uninstall() {
-  INSTALL_PATH="$TARGET_DIR/frontend-checklist"
-  rm -rf "$INSTALL_PATH"
-  say "✓ ${TOOL}: removed $INSTALL_PATH"
+  rm -rf "$TARGET_DIR/frontend-checklist"
+  say "✓ ${TOOL}: removed $TARGET_DIR/frontend-checklist"
 }
 
 # --- Dispatch ---
-INSTALL_PATH="$TARGET_DIR/frontend-checklist"
-
 if [ "$ACTION" = "uninstall" ]; then
   case "$TOOL" in
     codex)  codex_uninstall ;;
