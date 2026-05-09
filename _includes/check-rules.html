@@ -139,6 +139,10 @@
           data-en="Distinguish API errors from business errors; don't rely solely on HTTP status codes">明确接口错误和业务错误的处理方式，不要只判断 HTTP 状态码</li>
       <li data-i18n data-zh="接口响应进入页面前完成必要的归一化、兜底和字段兼容"
           data-en="Normalize, provide fallbacks, and handle field compatibility before API responses reach the UI">接口响应进入页面前完成必要的归一化、兜底和字段兼容</li>
+      <li data-i18n data-zh="写操作成功后应使相关查询缓存失效，避免读到过期数据"
+          data-en="After a successful write, invalidate related query caches to avoid reading stale data">写操作成功后应使相关查询缓存失效，避免读到过期数据</li>
+      <li data-i18n data-zh="分页、无限滚动场景需处理重复数据、翻页竞态和边界去重"
+          data-en="Pagination and infinite scroll must handle duplicates, page-switch races, and boundary deduplication">分页、无限滚动场景需处理重复数据、翻页竞态和边界去重</li>
     </ul>
   </article>
 
@@ -161,6 +165,14 @@
           data-en="Never make network requests inside render functions">不在渲染函数中发出网络请求</li>
       <li data-i18n data-zh="不在渲染中创建新组件，否则 React 会反复销毁并重建子组件树"
           data-en="Never create new components inside render — React will repeatedly destroy and recreate the subtree">不在渲染中创建新组件，否则 React 会反复销毁并重建子组件树</li>
+      <li data-i18n
+          data-zh="列表渲染 <code>key</code> 使用稳定唯一 id，不用数组下标或随机值"
+          data-en="Use a stable unique id for list <code>key</code>; don't use array index or random values">列表渲染 <code>key</code> 使用稳定唯一 id，不用数组下标或随机值</li>
+      <li data-i18n data-zh="同一表单/输入控件不要在受控与非受控之间切换"
+          data-en="Never switch a form input between controlled and uncontrolled modes">同一表单/输入控件不要在受控与非受控之间切换</li>
+      <li data-i18n
+          data-zh="<code>useEffect</code> / <code>watch</code> 的依赖项必须完整，避免闭包捕获过期值"
+          data-en="<code>useEffect</code> / <code>watch</code> dependencies must be complete to avoid stale-closure bugs"><code>useEffect</code> / <code>watch</code> 的依赖项必须完整，避免闭包捕获过期值</li>
       <li data-i18n data-zh="属性每个单独一行，方便阅读"
           data-en="Put each prop on its own line for readability">属性每个单独一行，方便阅读</li>
     </ul>
@@ -216,6 +228,12 @@
           data-en="Control initial bundle size; monitor build output, dependency size, and critical path resources">控制首屏资源体积，关注构建产物、依赖体积和关键路径资源</li>
       <li data-i18n data-zh="避免在循环中频繁操作 DOM 或触发重排"
           data-en="Avoid frequent DOM operations or layout thrashing inside loops">避免在循环中频繁操作 DOM 或触发重排</li>
+      <li data-i18n
+          data-zh="自定义字体设置 <code>font-display</code> 策略，避免 FOIT/CLS"
+          data-en="Set a <code>font-display</code> strategy on custom fonts to avoid FOIT and CLS">自定义字体设置 <code>font-display</code> 策略，避免 FOIT/CLS</li>
+      <li data-i18n
+          data-zh="第三方脚本延后加载（<code>defer</code>/<code>async</code>/idle），不阻塞首屏"
+          data-en="Defer third-party scripts (<code>defer</code>/<code>async</code>/idle) so they don't block first paint">第三方脚本延后加载（<code>defer</code>/<code>async</code>/idle），不阻塞首屏</li>
     </ul>
   </article>
 
@@ -228,6 +246,17 @@
           data-en="Add length, format, range, and required constraints to inputs">输入框根据业务添加长度、格式、范围、必填等限制</li>
       <li data-i18n data-zh="HTML 标签和属性操作必须限定/过滤传入变量值，防止 XSS"
           data-en="Sanitize/filter values passed to HTML tags and attributes to prevent XSS">HTML 标签和属性操作必须限定/过滤传入变量值，防止 XSS</li>
+      <li data-i18n
+          data-zh="<code>dangerouslySetInnerHTML</code> / <code>v-html</code> 仅用于可信来源，且内容需先经过消毒"
+          data-en="Use <code>dangerouslySetInnerHTML</code> / <code>v-html</code> only for trusted sources, and sanitize the content first"><code>dangerouslySetInnerHTML</code> / <code>v-html</code> 仅用于可信来源，且内容需先经过消毒</li>
+      <li data-i18n data-zh="跨域写操作考虑 CSRF：使用 SameSite cookie 或 CSRF token"
+          data-en="Protect cross-origin write operations against CSRF via SameSite cookies or CSRF tokens">跨域写操作考虑 CSRF：使用 SameSite cookie 或 CSRF token</li>
+      <li data-i18n
+          data-zh="<code>target=&quot;_blank&quot;</code> 必须配 <code>rel=&quot;noopener noreferrer&quot;</code>，防止反向 tabnabbing"
+          data-en="<code>target=&quot;_blank&quot;</code> links must include <code>rel=&quot;noopener noreferrer&quot;</code> to prevent reverse tabnabbing"><code>target="_blank"</code> 必须配 <code>rel="noopener noreferrer"</code>，防止反向 tabnabbing</li>
+      <li data-i18n
+          data-zh="需要防嵌入的页面应通过 <code>X-Frame-Options</code> 或 CSP <code>frame-ancestors</code> 防点击劫持"
+          data-en="Pages that must not be embedded should set <code>X-Frame-Options</code> or CSP <code>frame-ancestors</code> to block clickjacking">需要防嵌入的页面应通过 <code>X-Frame-Options</code> 或 CSP <code>frame-ancestors</code> 防点击劫持</li>
       <li data-i18n
           data-zh="不在前端存储敏感信息（token 存 httpOnly cookie，而非 localStorage）"
           data-en="Never store sensitive data on the frontend (store tokens in httpOnly cookies, not localStorage)">不在前端存储敏感信息（token 存 httpOnly cookie，而非 localStorage）</li>
@@ -311,6 +340,13 @@
           data-en="Core operations must be completable via keyboard">页面可通过键盘完成核心操作</li>
       <li data-i18n data-zh="文本、背景、状态色需满足基本对比度要求"
           data-en="Text, backgrounds, and status colors must meet minimum contrast requirements">文本、背景、状态色需满足基本对比度要求</li>
+      <li data-i18n
+          data-zh="动态内容变化应通知屏幕阅读器（<code>aria-live</code>）"
+          data-en="Dynamic content changes should notify screen readers via <code>aria-live</code>">动态内容变化应通知屏幕阅读器（<code>aria-live</code>）</li>
+      <li data-i18n data-zh="模态框打开时焦点应移入，关闭后应还原到触发元素"
+          data-en="When a modal opens, focus should move into it; when it closes, focus should return to the trigger">模态框打开时焦点应移入，关闭后应还原到触发元素</li>
+      <li data-i18n data-zh="颜色不能作为传递信息的唯一手段"
+          data-en="Color must not be the only means of conveying information">颜色不能作为传递信息的唯一手段</li>
     </ul>
   </article>
 
@@ -383,6 +419,11 @@
           data-en="New scripts, configs, and directories must follow existing project naming conventions">新增脚本、配置或目录时，命名应与现有项目结构保持一致</li>
       <li data-i18n data-zh="自动化校验尽量在 CI 中完成，避免只依赖人工检查"
           data-en="Automate checks in CI rather than relying on manual review">自动化校验尽量在 CI 中完成，避免只依赖人工检查</li>
+      <li data-i18n data-zh="生产 source map 仅上传至错误监控平台，不随静态资源公开部署"
+          data-en="Upload production source maps only to error-monitoring platforms; don't deploy them alongside public assets">生产 source map 仅上传至错误监控平台，不随静态资源公开部署</li>
+      <li data-i18n
+          data-zh="<code>.env</code> 等含敏感变量的文件不入库，改由 <code>.env.example</code> 声明所需字段"
+          data-en="Never commit <code>.env</code> or other files with secrets; declare required fields via <code>.env.example</code>"><code>.env</code> 等含敏感变量的文件不入库，改由 <code>.env.example</code> 声明所需字段</li>
     </ul>
   </article>
 
@@ -415,6 +456,8 @@
           data-en="Frontend performance metrics (LCP, FID, CLS) should be observable">前端性能指标（LCP、FID、CLS）应可观测</li>
       <li data-i18n data-zh="错误上报应区分业务异常和程序异常，便于分类处理"
           data-en="Error reports should distinguish business exceptions from program exceptions">错误上报应区分业务异常和程序异常，便于分类处理</li>
+      <li data-i18n data-zh="埋点和日志中的手机号、身份证、邮箱等 PII 需脱敏或哈希"
+          data-en="Mask or hash PII (phone numbers, IDs, emails) in analytics and logs">埋点和日志中的手机号、身份证、邮箱等 PII 需脱敏或哈希</li>
     </ul>
   </article>
 
@@ -432,16 +475,22 @@
     </ul>
   </article>
 
-  <article class="card" id="a11y-extra">
-    <h2><span class="card-emoji">🦮</span><span data-i18n data-zh="可访问性补充" data-en="Accessibility Supplement">可访问性补充</span></h2>
+  <article class="card" id="browser">
+    <h2><span class="card-emoji">🌍</span><span data-i18n data-zh="浏览器兼容" data-en="Browser Compatibility">浏览器兼容</span></h2>
     <ul>
       <li data-i18n
-          data-zh="动态内容变化应通知屏幕阅读器（<code>aria-live</code>）"
-          data-en="Dynamic content changes should notify screen readers via <code>aria-live</code>">动态内容变化应通知屏幕阅读器（<code>aria-live</code>）</li>
-      <li data-i18n data-zh="模态框打开时焦点应移入，关闭后应还原到触发元素"
-          data-en="When a modal opens, focus should move into it; when it closes, focus should return to the trigger">模态框打开时焦点应移入，关闭后应还原到触发元素</li>
-      <li data-i18n data-zh="颜色不能作为传递信息的唯一手段"
-          data-en="Color must not be the only means of conveying information">颜色不能作为传递信息的唯一手段</li>
+          data-zh="明确目标浏览器矩阵，并在构建工具（<code>browserslist</code>、<code>targets</code>）中同步"
+          data-en="Define a target browser matrix and keep it in sync with build tools (<code>browserslist</code>, <code>targets</code>)">明确目标浏览器矩阵，并在构建工具（<code>browserslist</code>、<code>targets</code>）中同步</li>
+      <li data-i18n
+          data-zh="新特性先做特性检测（<code>'IntersectionObserver' in window</code>），不要做 UA 嗅探"
+          data-en="Use feature detection (<code>'IntersectionObserver' in window</code>) for new APIs; don't rely on UA sniffing">新特性先做特性检测（<code>'IntersectionObserver' in window</code>），不要做 UA 嗅探</li>
+      <li data-i18n data-zh="按目标矩阵配置 polyfill，避免全量引入拖慢首屏"
+          data-en="Configure polyfills against the target matrix; avoid shipping everything and slowing first paint">按目标矩阵配置 polyfill，避免全量引入拖慢首屏</li>
+      <li data-i18n
+          data-zh="使用 CSS 新特性（<code>:has</code>、容器查询、<code>color-mix</code> 等）时考虑降级"
+          data-en="When using modern CSS (<code>:has</code>, container queries, <code>color-mix</code>, etc.), provide graceful fallbacks">使用 CSS 新特性（<code>:has</code>、容器查询、<code>color-mix</code> 等）时考虑降级</li>
+      <li data-i18n data-zh="核心页面需在目标浏览器上真机或等价环境验证"
+          data-en="Verify core pages on real target browsers or equivalent environments">核心页面需在目标浏览器上真机或等价环境验证</li>
     </ul>
   </article>
 

@@ -60,7 +60,7 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [Internationalization (i18n)](#internationalization-i18n)
 - [Logging & Monitoring](#logging--monitoring)
 - [Dependency Management](#dependency-management)
-- [Accessibility Supplement](#accessibility-supplement)
+- [Browser Compatibility](#browser-compatibility)
 - [Documentation & Collaboration](#documentation--collaboration)
 - [PR Self-Review](#pr-self-review)
 
@@ -126,6 +126,8 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Handle race conditions in concurrent requests — prevent stale responses from overwriting newer state
 - [ ] Distinguish API errors from business errors; don't rely solely on HTTP status codes
 - [ ] Normalize, provide fallbacks, and handle field compatibility before API responses reach the UI
+- [ ] After a successful write, invalidate related query caches to avoid reading stale data
+- [ ] Pagination and infinite scroll must handle duplicates, page-switch races, and boundary deduplication
 
 ## UI & Rendering
 
@@ -136,6 +138,9 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Never create random values in render functions (`Math.random()`, `Date.now()`)
 - [ ] Never make network requests inside render functions
 - [ ] Never create new components inside render — React will repeatedly destroy and recreate the subtree
+- [ ] Use a stable unique id for list `key`; don't use array index or random values
+- [ ] Never switch a form input between controlled and uncontrolled modes
+- [ ] `useEffect` / `watch` dependencies must be complete to avoid stale-closure bugs
 - [ ] Put each prop on its own line for readability
 
 ## Styles & Responsiveness
@@ -163,12 +168,18 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Use code splitting, memoization, and virtualization for heavy components, lists, and large dependencies
 - [ ] Control initial bundle size; monitor build output, dependency size, and critical path resources
 - [ ] Avoid frequent DOM operations or layout thrashing inside loops
+- [ ] Set a `font-display` strategy on custom fonts to avoid FOIT and CLS
+- [ ] Defer third-party scripts (`defer`/`async`/idle) so they don't block first paint
 
 ## Security & Robustness
 
 - [ ] Validate all user and external input against business rules
 - [ ] Add length, format, range, and required constraints to inputs
 - [ ] Sanitize/filter values passed to HTML tags and attributes to prevent XSS
+- [ ] Use `dangerouslySetInnerHTML` / `v-html` only for trusted sources, and sanitize the content first
+- [ ] Protect cross-origin write operations against CSRF via SameSite cookies or CSRF tokens
+- [ ] `target="_blank"` links must include `rel="noopener noreferrer"` to prevent reverse tabnabbing
+- [ ] Pages that must not be embedded should set `X-Frame-Options` or CSP `frame-ancestors` to block clickjacking
 - [ ] Never store sensitive data on the frontend (store tokens in httpOnly cookies, not localStorage)
 - [ ] Regularly audit third-party dependencies for vulnerabilities (`npm audit`)
 - [ ] Always clear timers and event listeners to prevent memory leaks
@@ -206,6 +217,9 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Form controls must have associated `label` elements
 - [ ] Core operations must be completable via keyboard
 - [ ] Text, backgrounds, and status colors must meet minimum contrast requirements
+- [ ] Dynamic content changes should notify screen readers via `aria-live`
+- [ ] When a modal opens, focus should move into it; when it closes, focus should return to the trigger
+- [ ] Color must not be the only means of conveying information
 
 ## User Experience
 
@@ -239,6 +253,8 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Environment variables, build config, and proxy settings must not be tied to local environments
 - [ ] New scripts, configs, and directories must follow existing project naming conventions
 - [ ] Automate checks in CI rather than relying on manual review
+- [ ] Upload production source maps only to error-monitoring platforms; don't deploy them alongside public assets
+- [ ] Never commit `.env` or other files with secrets; declare required fields via `.env.example`
 
 ## Internationalization (i18n)
 
@@ -253,6 +269,7 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Never log sensitive information to the console in production
 - [ ] Frontend performance metrics (LCP, FID, CLS) should be observable
 - [ ] Error reports should distinguish business exceptions from program exceptions
+- [ ] Mask or hash PII (phone numbers, IDs, emails) in analytics and logs
 
 ## Dependency Management
 
@@ -261,11 +278,13 @@ The installer verifies sha256 checksums, rolls back on failure, and cleans up te
 - [ ] Check license compatibility (GPL libraries cannot be used freely in commercial products)
 - [ ] Prefer tree-shakeable imports for large dependencies to avoid bundling everything
 
-## Accessibility Supplement
+## Browser Compatibility
 
-- [ ] Dynamic content changes should notify screen readers via `aria-live`
-- [ ] When a modal opens, focus should move into it; when it closes, focus should return to the trigger
-- [ ] Color must not be the only means of conveying information
+- [ ] Define a target browser matrix and keep it in sync with build tools (`browserslist`, `targets`)
+- [ ] Use feature detection (`'IntersectionObserver' in window`) for new APIs; don't rely on UA sniffing
+- [ ] Configure polyfills against the target matrix; avoid shipping everything and slowing first paint
+- [ ] When using modern CSS (`:has`, container queries, `color-mix`, etc.), provide graceful fallbacks
+- [ ] Verify core pages on real target browsers or equivalent environments
 
 ## Documentation & Collaboration
 
