@@ -1,6 +1,6 @@
 ---
 name: frontend-checklist
-description: 按前端开发检查清单对照当前代码变更、PR diff、指定文件或代码片段，给出命中问题清单和修复建议。仅在用户显式要求按 checklist / 检查清单 review 前端代码时触发，例如 /frontend-checklist、按前端清单检查、前端自检、检查前端改动、review 这个 PR 的前端问题。
+description: 按前端开发检查清单对照当前代码变更、PR diff、指定文件或代码片段，给出命中问题清单和修复建议。仅在用户显式要求按 checklist / 检查清单 review 前端代码时触发，例如 /frontend-checklist、按前端清单检查、前端自检、检查前端改动、review 这个 PR 的前端问题，或英文 "frontend checklist review"、"review this PR against the frontend checklist"、"check frontend changes against checklist"。
 ---
 
 # Frontend Checklist Review
