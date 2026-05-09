@@ -102,7 +102,7 @@ html[data-theme="dark"] {
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   margin: 0;
@@ -113,6 +113,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   position: relative;
+  overflow-x: clip;
 }
 body::before {
   content: "";
@@ -388,6 +389,7 @@ a.stat-pill:hover {
   z-index: 40;
   height: 3px;
   background: transparent;
+  overflow: hidden;
 }
 .progress-bar__fill {
   height: 100%;
@@ -427,11 +429,13 @@ a.stat-pill:hover {
 @media (min-width: 64em) {
   .page {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 260px minmax(0, 1fr);
     gap: 2.5rem;
     padding: 2.5rem 2rem 5rem;
   }
 }
+
+.content { min-width: 0; }
 
 /* ====== Intro ====== */
 .intro {
@@ -443,6 +447,7 @@ a.stat-pill:hover {
   border-radius: var(--radius);
   box-shadow: var(--card-shadow);
   overflow: hidden;
+  min-width: 0;
 }
 .intro::before {
   content: "";
@@ -796,6 +801,7 @@ a.stat-pill:hover {
     inset 0 1px 0 rgba(255, 255, 255, .04);
   scroll-margin-top: 80px;
   background-clip: padding-box;
+  min-width: 0;
 }
 .skill-banner::before {
   content: "";
@@ -888,6 +894,8 @@ a.stat-pill:hover {
   border-radius: var(--radius-sm);
   overflow-x: auto;
   white-space: pre;
+  max-width: 100%;
+  min-width: 0;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03);
 }
 .skill-cmd code { font: inherit; color: inherit; background: transparent; padding: 0; }
