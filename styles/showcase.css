@@ -173,7 +173,7 @@ html[data-theme="dark"] .sc-sev-low { background: rgba(147, 197, 253, 0.18); col
   gap: .35rem;
   flex-wrap: wrap;
   max-width: 60%;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .sc-tag {
   font-size: .72rem;
