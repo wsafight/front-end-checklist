@@ -1,0 +1,39 @@
+---
+layout: default
+title: 案例库
+permalink: /showcase.html
+---
+
+<main class="page showcase-page">
+  <div class="content">
+    <section class="intro" aria-label="Intro">
+      <h2 data-i18n data-zh="Skill 实战案例" data-en="Skill showcase">Skill 实战案例</h2>
+      <p data-i18n
+         data-zh="下面每个案例里的 review 报告都由已安装的 frontend-checklist Skill 对真实的坏代码执行产出。Skill 读取 SKILL.md 和 checklist.md，按清单分组逐类核对，只报告命中条目。"
+         data-en="Each review below is produced by running the installed frontend-checklist Skill on the bad code. The Skill reads SKILL.md + checklist.md and reports only hit items, grouped by category.">
+        下面每个案例里的 review 报告都由已安装的 frontend-checklist Skill 对真实的坏代码执行产出。Skill 读取 SKILL.md 和 checklist.md，按清单分组逐类核对，只报告命中条目。
+      </p>
+      <p class="showcase-meta">
+        <a href="./" data-i18n data-zh="← 回到清单首页" data-en="← Back to checklist">← 回到清单首页</a>
+        <span class="sep">·</span>
+        <a href="https://github.com/wsafight/front-end-checklist/tree/gh-pages/showcase/cases" target="_blank" rel="noopener" data-i18n data-zh="查看案例源文件" data-en="Case sources on GitHub">查看案例源文件</a>
+      </p>
+    </section>
+
+    <section class="showcase" aria-label="Showcase cases">
+      <div class="showcase-toolbar">
+        <div class="showcase-filter" role="group" aria-label="Filter by severity">
+          <button type="button" class="showcase-chip is-active" data-filter="all" data-i18n data-zh="全部" data-en="All">全部</button>
+          <button type="button" class="showcase-chip" data-filter="high" data-i18n data-zh="严重" data-en="High">严重</button>
+          <button type="button" class="showcase-chip" data-filter="medium" data-i18n data-zh="中等" data-en="Medium">中等</button>
+          <button type="button" class="showcase-chip" data-filter="low" data-i18n data-zh="轻微" data-en="Low">轻微</button>
+        </div>
+        <p class="showcase-count" data-i18n-count
+           data-zh-tmpl="共 {n} 个案例"
+           data-en-tmpl="{n} cases">共 0 个案例</p>
+      </div>
+      <div id="showcase-list" class="showcase-list" data-endpoint="showcase/showcase.json" data-mode="full"></div>
+      <p class="showcase-empty" hidden data-i18n data-zh="没有匹配的案例" data-en="No matching cases.">没有匹配的案例</p>
+    </section>
+  </div>
+</main>

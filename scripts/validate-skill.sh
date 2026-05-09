@@ -23,4 +23,17 @@ head -n 20 "$SKILL_MD" | grep -qE '^description:[[:space:]]*[^[:space:]]' || fai
 # Dry-run the Cursor rule builder so awk frontmatter stripping breaks in CI, not at release time.
 bash "$ROOT/scripts/build-cursor-rule.sh" >/dev/null || fail "build-cursor-rule.sh failed"
 
+# Rebuild showcase.json and fail if it drifts from checked-in copy.
+if command -v node >/dev/null 2>&1 && [ -d "$ROOT/showcase/cases" ]; then
+  checked_in="$ROOT/showcase/showcase.json"
+  saved="$(mktemp)"
+  cp "$checked_in" "$saved"
+  node "$ROOT/scripts/build-showcase.js" >/dev/null || { mv "$saved" "$checked_in"; fail "build-showcase.js failed"; }
+  if ! diff -q "$saved" "$checked_in" >/dev/null; then
+    mv "$saved" "$checked_in"
+    fail "showcase.json out of date — run \`node scripts/build-showcase.js\` and commit"
+  fi
+  rm -f "$saved"
+fi
+
 echo "validate-skill: ok"
