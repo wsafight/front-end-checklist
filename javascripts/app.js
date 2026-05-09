@@ -186,9 +186,11 @@
           || '✓';
         var done = function () {
           btn.textContent = copied;
+          btn.classList.add('is-copied');
           setTimeout(function () {
             var nowLang = document.documentElement.getAttribute('data-lang') || DEFAULT_LANG;
             btn.textContent = btn.getAttribute('data-' + nowLang) || original;
+            btn.classList.remove('is-copied');
           }, 1500);
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -213,6 +215,18 @@
     cb && cb();
   }
 
+  function initCardHoverGlow() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+    $$('.card').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
   /* ---------- init ---------- */
   function init() {
     bindLang();
@@ -225,6 +239,7 @@
     initTocActive();
     initSkillTabs();
     initCopyButtons();
+    initCardHoverGlow();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
