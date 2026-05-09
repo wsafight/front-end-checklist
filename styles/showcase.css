@@ -205,6 +205,17 @@ html[data-theme="dark"] .sc-tag { background: rgba(96, 165, 250, 0.15); }
   color: var(--fg-muted);
   margin-bottom: .55rem;
 }
+.sc-lang-note {
+  display: block;
+  margin: -.25rem 0 .7rem;
+  padding: .45rem .65rem;
+  background: var(--bg-alt);
+  border-left: 3px solid var(--fg-muted);
+  border-radius: var(--radius-sm);
+  font-size: .72rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
 .sc-code {
   margin: 0;
   padding: .85rem 1rem;

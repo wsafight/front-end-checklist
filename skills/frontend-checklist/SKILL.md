@@ -23,7 +23,11 @@ description: 按前端开发检查清单对照当前代码变更、PR diff、指
 
 2. **读取代码**：读取目标文件，并用全文搜索定位相关代码；必要时补充读取上下文（被调用的 hook、类型定义、父组件等）。
 
-3. **读取检查清单**：执行 review 前读取 [references/checklist.md](references/checklist.md)，按清单分组逐类核对。
+3. **读取检查清单**：执行 review 前根据用户语言选择清单：
+   - 用户用中文提问 → 读 [references/checklist.md](references/checklist.md)，review 输出也用中文
+   - 用户用英文提问 → 读 [references/checklist.en.md](references/checklist.en.md)，review 输出用英文
+   - 用户明确指定语言时以用户指定为准
+   按清单分组逐类核对。
 
 4. **只输出命中的问题**，通过/不适用的条目一律不提。
 
@@ -31,8 +35,9 @@ description: 按前端开发检查清单对照当前代码变更、PR diff、指
 
 若无命中，一句话说明 "未发现清单命中的问题"，并说明检查范围和已对照分组数量；只有用户要求完整记录时才列出全部分组名。
 
-若有命中，按如下格式输出：
+若有命中，按如下格式输出（中文问 → 中文字段名；英文问 → 用下面英文字段名）：
 
+中文：
 ```
 ## 命中问题（共 N 项）
 
@@ -41,6 +46,17 @@ description: 按前端开发检查清单对照当前代码变更、PR diff、指
   - 位置：`path/to/file.tsx:行号`
   - 现状：<一句话描述当前代码怎么违反的>
   - 建议：<具体修改方向，必要时给 1-3 行示例代码>
+```
+
+English:
+```
+## Issues found (N total)
+
+### [Group name]
+- **[Checklist item verbatim]**
+  - Location: `path/to/file.tsx:line`
+  - Problem: <one sentence describing how the code violates this>
+  - Suggestion: <concrete fix direction; 1-3 lines of example code when useful>
 ```
 
 约束：
@@ -62,4 +78,4 @@ description: 按前端开发检查清单对照当前代码变更、PR diff、指
 
 ## 检查清单
 
-完整清单在 [references/checklist.md](references/checklist.md)。只有在执行本 skill 的 review 流程时读取它；不要在普通问答或改代码任务中主动加载。
+中文清单在 [references/checklist.md](references/checklist.md)，英文清单在 [references/checklist.en.md](references/checklist.en.md)。按用户语言选择对应的清单文件，只有在执行本 skill 的 review 流程时读取；不要在普通问答或改代码任务中主动加载。

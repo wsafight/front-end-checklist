@@ -175,6 +175,9 @@
     var hits = countHits(c.review);
     var hitsLabel = lang === 'en' ? (hits + ' hits') : ('命中 ' + hits + ' 项');
     var groups = (c.groups || []).map(function (g) { return '<span class="sc-tag">' + esc(g) + '</span>'; }).join('');
+    var langNote = lang === 'en'
+      ? 'The review below is in Chinese because these cases were captured from Chinese conversations. When you run the Skill, it replies in your language — ask in English to get an English review.'
+      : '下方报告是中文，因为这些案例是在中文对话里跑出来的。实际使用时 Skill 会跟随你提问的语言回复：用英文提问就会输出英文 review。';
     return [
       '<article class="sc-card" data-severity="' + esc(c.severity) + '" data-id="' + esc(c.id) + '">',
       '  <header class="sc-card-head">',
@@ -197,6 +200,7 @@
       '    </div>',
       '    <div class="sc-pane sc-pane-review">',
       '      <div class="sc-pane-label">' + (lang === 'en' ? 'Skill review' : 'Skill 审查报告') + '</div>',
+      '      <p class="sc-lang-note">' + esc(langNote) + '</p>',
       '      <div class="sc-review">' + renderMarkdown(c.review) + '</div>',
       '    </div>',
       '  </div>',
