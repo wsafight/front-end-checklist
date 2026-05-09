@@ -550,22 +550,6 @@ a.stat-pill:hover {
   transform: translateY(12px);
   animation: cardIn .5s var(--ease) forwards;
 }
-.card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .3s var(--ease);
-  background:
-    radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in srgb, var(--cat, var(--accent)) 14%, transparent),
-      transparent 45%);
-  z-index: 0;
-}
-.card > * { position: relative; z-index: 1; }
-.card:hover::after { opacity: 1; }
 .card:nth-of-type(1) { animation-delay: .02s; }
 .card:nth-of-type(2) { animation-delay: .05s; }
 .card:nth-of-type(3) { animation-delay: .08s; }

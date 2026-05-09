@@ -215,18 +215,6 @@
     cb && cb();
   }
 
-  function initCardHoverGlow() {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
-    $$('.card').forEach(function (card) {
-      card.addEventListener('pointermove', function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-      });
-    });
-  }
-
   /* ---------- init ---------- */
   function init() {
     bindLang();
@@ -239,7 +227,6 @@
     initTocActive();
     initSkillTabs();
     initCopyButtons();
-    initCardHoverGlow();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
