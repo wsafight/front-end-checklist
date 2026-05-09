@@ -244,6 +244,17 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   background: #34d399;
   box-shadow: 0 0 8px rgba(52, 211, 153, .6);
 }
+a.stat-pill {
+  color: rgba(255, 255, 255, .88);
+  text-decoration: none;
+  transition: all .15s var(--ease);
+}
+a.stat-pill:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+  border-color: rgba(255, 255, 255, .24);
+  text-decoration: none;
+}
 
 .masthead-links { margin-top: .25rem; }
 .masthead-links a {
@@ -643,4 +654,110 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 ::selection {
   background: var(--accent-soft);
   color: var(--accent);
+}
+
+/* ====== Skill Banner ====== */
+.skill-banner {
+  position: relative;
+  margin: 1.5rem 0 2rem;
+  padding: 1.25rem 1.25rem 1rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  scroll-margin-top: 80px;
+}
+.skill-banner::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 14px; bottom: 14px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.skill-banner h2 {
+  margin: 0 0 .35rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+.skill-banner .skill-lead {
+  margin: 0 0 1rem;
+  font-size: .92rem;
+  color: var(--fg-soft);
+  line-height: 1.6;
+}
+.skill-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin-bottom: .6rem;
+}
+.skill-tabs.is-sub { margin-top: .25rem; }
+.skill-tab {
+  padding: .35rem .75rem;
+  font-size: .82rem;
+  line-height: 1.2;
+  font-family: inherit;
+  color: var(--fg-soft);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .15s var(--ease);
+}
+.skill-tab:hover { color: var(--fg); border-color: var(--fg-muted); }
+.skill-tab.is-active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.skill-cmd {
+  position: relative;
+  margin: .5rem 0 0;
+  padding: .75rem 3rem .75rem .85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .82rem;
+  line-height: 1.55;
+  color: var(--code-fg);
+  background: var(--code-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  white-space: pre;
+}
+.skill-cmd code { font: inherit; color: inherit; background: transparent; padding: 0; }
+.skill-cmd .prompt { color: var(--accent); user-select: none; margin-right: .4rem; }
+.skill-panel[data-tab-panel="scope"] { position: relative; }
+.copy-btn {
+  position: absolute;
+  top: 6px; right: 6px;
+  padding: .2rem .5rem;
+  font-size: .72rem;
+  font-family: inherit;
+  color: var(--fg-soft);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s var(--ease);
+}
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+.skill-hint {
+  margin: .6rem 0 0;
+  font-size: .8rem;
+  color: var(--fg-muted);
+}
+.skill-hint a { color: var(--accent); text-decoration: none; }
+.skill-hint a:hover { text-decoration: underline; }
+.skill-panel[hidden] { display: none; }
+
+html[data-theme="dark"] .skill-banner { background: var(--bg-soft); }
+html[data-theme="dark"] .skill-cmd { background: rgba(255,255,255,0.04); }
+html[data-theme="dark"] .copy-btn { background: var(--surface-elev); }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]):not([data-theme="dark"]) .skill-banner { background: var(--bg-soft); }
+  html:not([data-theme="light"]):not([data-theme="dark"]) .skill-cmd { background: rgba(255,255,255,0.04); }
+  html:not([data-theme="light"]):not([data-theme="dark"]) .copy-btn { background: var(--surface-elev); }
 }

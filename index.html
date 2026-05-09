@@ -56,6 +56,68 @@ layout: default
       </ul>
     </section>
 
+    <section class="skill-banner" id="skill-banner" aria-labelledby="skill-banner-title">
+      <h2 id="skill-banner-title" data-i18n
+          data-zh="这份清单也是一个 AI 编程助手 Skill"
+          data-en="This checklist is also an AI coding assistant Skill">
+        这份清单也是一个 AI 编程助手 Skill
+      </h2>
+      <p class="skill-lead" data-i18n
+         data-zh="已打包为 Claude Code / Kiro / Cursor / Codex 的 Skill。选择工具和安装范围，复制命令执行即可；脚本内含校验、失败回滚、临时文件自动清理，不污染你的环境。"
+         data-en="Packaged as a Skill for Claude Code / Kiro / Cursor / Codex. Pick your tool and scope, copy the command. The installer verifies checksums, rolls back on failure, and cleans up temp files — nothing leaks into your environment.">
+        已打包为 Claude Code / Kiro / Cursor / Codex 的 Skill。选择工具和安装范围，复制命令执行即可；脚本内含校验、失败回滚、临时文件自动清理，不污染你的环境。
+      </p>
+
+      <div class="skill-tabs" role="tablist" aria-label="Tool">
+        <button type="button" class="skill-tab" data-tab-group="tool" data-tab-value="claude" role="tab">Claude Code</button>
+        <button type="button" class="skill-tab" data-tab-group="tool" data-tab-value="kiro" role="tab">Kiro</button>
+        <button type="button" class="skill-tab" data-tab-group="tool" data-tab-value="cursor" role="tab">Cursor</button>
+        <button type="button" class="skill-tab" data-tab-group="tool" data-tab-value="codex" role="tab">Codex</button>
+      </div>
+
+      <div class="skill-tabs is-sub" role="tablist" aria-label="Scope">
+        <button type="button" class="skill-tab" data-tab-group="scope" data-tab-value="global" role="tab" data-i18n data-zh="全局" data-en="Global">全局</button>
+        <button type="button" class="skill-tab" data-tab-group="scope" data-tab-value="local" role="tab" data-i18n data-zh="项目" data-en="Project">项目</button>
+        <button type="button" class="skill-tab" data-tab-group="scope" data-tab-value="uninstall" role="tab" data-i18n data-zh="卸载" data-en="Uninstall">卸载</button>
+        <button type="button" class="skill-tab" data-tab-group="scope" data-tab-value="windows" role="tab">Windows</button>
+      </div>
+
+      {% assign tools = "claude,kiro,cursor,codex" | split: "," %}
+      {% for tool in tools %}
+      <div class="skill-panel" data-tab-panel="tool" data-tab-value="{{ tool }}" role="tabpanel" hidden>
+        <div class="skill-panel" data-tab-panel="scope" data-tab-value="global">
+          <pre class="skill-cmd" id="cmd-{{ tool }}-global"><span class="prompt">$</span><code>curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- {{ tool }}</code></pre>
+          <button type="button" class="copy-btn" data-copy-target="#cmd-{{ tool }}-global code" data-i18n data-zh="复制" data-en="Copy" data-copied-zh="已复制" data-copied-en="Copied">Copy</button>
+        </div>
+        <div class="skill-panel" data-tab-panel="scope" data-tab-value="local" hidden>
+          <pre class="skill-cmd" id="cmd-{{ tool }}-local"><span class="prompt">$</span><code>curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- {{ tool }} --local</code></pre>
+          <button type="button" class="copy-btn" data-copy-target="#cmd-{{ tool }}-local code" data-i18n data-zh="复制" data-en="Copy" data-copied-zh="已复制" data-copied-en="Copied">Copy</button>
+        </div>
+        <div class="skill-panel" data-tab-panel="scope" data-tab-value="uninstall" hidden>
+          <pre class="skill-cmd" id="cmd-{{ tool }}-uninstall"><span class="prompt">$</span><code>curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- {{ tool }} --uninstall</code></pre>
+          <button type="button" class="copy-btn" data-copy-target="#cmd-{{ tool }}-uninstall code" data-i18n data-zh="复制" data-en="Copy" data-copied-zh="已复制" data-copied-en="Copied">Copy</button>
+        </div>
+        <div class="skill-panel" data-tab-panel="scope" data-tab-value="windows" hidden>
+          <pre class="skill-cmd" id="cmd-{{ tool }}-windows"><span class="prompt">PS&gt;</span><code>& ([scriptblock]::Create((irm https://github.com/wsafight/front-end-checklist/releases/latest/download/install.ps1))) -Tool {{ tool }}</code></pre>
+          <button type="button" class="copy-btn" data-copy-target="#cmd-{{ tool }}-windows code" data-i18n data-zh="复制" data-en="Copy" data-copied-zh="已复制" data-copied-en="Copied">Copy</button>
+        </div>
+      </div>
+      {% endfor %}
+
+      <p class="skill-hint" data-i18n
+         data-zh="安装完成后在对话里说 /frontend-checklist 或 &quot;按前端清单 review 这段代码&quot; 触发审查。仅在显式请求时运行，不打扰日常写代码。"
+         data-en="After install, say /frontend-checklist or &quot;review with the frontend checklist&quot; in chat to trigger a review. Explicit trigger only — won't interrupt regular coding.">
+        安装完成后在对话里说 /frontend-checklist 或 "按前端清单 review 这段代码" 触发审查。仅在显式请求时运行，不打扰日常写代码。
+      </p>
+      <p class="skill-hint">
+        <a href="https://github.com/wsafight/front-end-checklist/releases/latest" target="_blank" rel="noopener" data-i18n data-zh="查看 Release" data-en="View Release">查看 Release</a>
+        ·
+        <a href="https://github.com/wsafight/front-end-checklist/blob/gh-pages/install.sh.tmpl" target="_blank" rel="noopener" data-i18n data-zh="审查安装脚本" data-en="Audit install script">审查安装脚本</a>
+        ·
+        <a href="https://github.com/wsafight/front-end-checklist/tree/gh-pages/skills/frontend-checklist" target="_blank" rel="noopener" data-i18n data-zh="查看 Skill 源文件" data-en="View Skill source">查看 Skill 源文件</a>
+      </p>
+    </section>
+
     {% include check-rules.html %}
   </div>
 </main>

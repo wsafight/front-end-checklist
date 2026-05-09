@@ -14,6 +14,28 @@ This checklist was created to avoid repeating the same explanations during code 
 
 ---
 
+## Use as an AI coding assistant Skill
+
+This checklist is also packaged as a Skill for Claude Code / Kiro / Cursor / Codex. One-line install:
+
+```bash
+# Claude Code, global
+curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- claude
+
+# Project-level: add --local. Uninstall: add --uninstall.
+# Other tools: replace `claude` with kiro / cursor / codex.
+```
+
+Windows (PowerShell):
+
+```powershell
+& ([scriptblock]::Create((irm https://github.com/wsafight/front-end-checklist/releases/latest/download/install.ps1))) -Tool claude
+```
+
+The installer verifies sha256 checksums, rolls back on failure, and cleans up temp files. After install, say `/frontend-checklist` or "review with the frontend checklist" in chat to trigger a review. See [Releases](https://github.com/wsafight/front-end-checklist/releases/latest).
+
+---
+
 ## Table of Contents
 
 - [Naming Conventions](#naming-conventions)

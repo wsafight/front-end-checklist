@@ -14,6 +14,28 @@
 
 ---
 
+## 作为 AI 编程助手 Skill 使用
+
+这份清单同时打包为 Claude Code / Kiro / Cursor / Codex 的 Skill，一条命令安装：
+
+```bash
+# Claude Code 全局
+curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- claude
+
+# 项目级：加 --local；卸载：加 --uninstall
+# 其他工具把 claude 换成 kiro / cursor / codex
+```
+
+Windows (PowerShell)：
+
+```powershell
+& ([scriptblock]::Create((irm https://github.com/wsafight/front-end-checklist/releases/latest/download/install.ps1))) -Tool claude
+```
+
+安装脚本会校验 sha256、失败自动回滚、清理临时文件。安装后在对话里说 `/frontend-checklist` 或 "按前端清单 review" 即可触发审查。详见 [Releases](https://github.com/wsafight/front-end-checklist/releases/latest)。
+
+---
+
 ## 目录
 
 - [命名规范](#命名规范)

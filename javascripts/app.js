@@ -143,6 +143,76 @@
     }
   }
 
+  /* ---------- skill tabs & clipboard ---------- */
+  function initSkillTabs() {
+    var root = $('.skill-banner');
+    if (!root) return;
+
+    function activate(group, value) {
+      $$('[data-tab-group="' + group + '"]', root).forEach(function (btn) {
+        var active = btn.getAttribute('data-tab-value') === value;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      $$('[data-tab-panel="' + group + '"]', root).forEach(function (panel) {
+        panel.hidden = panel.getAttribute('data-tab-value') !== value;
+      });
+    }
+
+    $$('[data-tab-group]', root).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var group = btn.getAttribute('data-tab-group');
+        activate(group, btn.getAttribute('data-tab-value'));
+        if (group === 'tool') activate('scope', 'global');
+      });
+    });
+    activate('tool', 'claude');
+    activate('scope', 'global');
+  }
+
+  function initCopyButtons() {
+    $$('.copy-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var sel = btn.getAttribute('data-copy-target');
+        var target = sel && document.querySelector(sel);
+        if (!target) return;
+        var text = target.textContent.trim();
+        var lang = document.documentElement.getAttribute('data-lang') || DEFAULT_LANG;
+        var original = btn.getAttribute('data-' + lang)
+          || btn.getAttribute('data-label-default')
+          || btn.textContent;
+        var copied = btn.getAttribute('data-copied-' + lang)
+          || btn.getAttribute('data-label-copied')
+          || '✓';
+        var done = function () {
+          btn.textContent = copied;
+          setTimeout(function () {
+            var nowLang = document.documentElement.getAttribute('data-lang') || DEFAULT_LANG;
+            btn.textContent = btn.getAttribute('data-' + nowLang) || original;
+          }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+        } else {
+          fallbackCopy(text, done);
+        }
+      });
+    });
+  }
+
+  function fallbackCopy(text, cb) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'absolute';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    cb && cb();
+  }
+
   /* ---------- init ---------- */
   function init() {
     bindLang();
@@ -153,6 +223,8 @@
     initScrollToTop();
     initProgressBar();
     initTocActive();
+    initSkillTabs();
+    initCopyButtons();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

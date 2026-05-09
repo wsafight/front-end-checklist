@@ -1,0 +1,157 @@
+# Frontend Checklist Skill installer (Windows).
+# Usage:
+#   irm https://github.com/wsafight/front-end-checklist/releases/latest/download/install.ps1 | iex
+# Or with args:
+#   & ([scriptblock]::Create((irm ...install.ps1))) claude -Local
+[CmdletBinding()]
+param(
+  [ValidateSet('claude','kiro','cursor','codex')]
+  [string]$Tool = 'claude',
+  [switch]$Local,
+  [switch]$Uninstall
+)
+
+$ErrorActionPreference = 'Stop'
+$Version    = '__VERSION__'
+$Repo       = 'wsafight/front-end-checklist'
+$BaseUrl    = "https://github.com/$Repo/releases/download/$Version"
+$AssetTar   = 'frontend-checklist-skill.tar.gz'
+$AssetCursor= 'frontend-checklist-cursor.mdc'
+$AssetSums  = 'sha256sums.txt'
+
+$scope = if ($Local) { 'local' } else { 'global' }
+$rootDir = if ($Local) { (Get-Location).Path } else { $HOME }
+$subdir = switch ($Tool) {
+  'claude' { '.claude\skills' }
+  'kiro'   { '.kiro\skills' }
+  'cursor' { '.cursor\rules' }
+  'codex'  { '.frontend-checklist' }
+}
+$targetDir = Join-Path $rootDir $subdir
+$tmp = New-Item -ItemType Directory -Path (Join-Path $env:TEMP ("fcs-" + [guid]::NewGuid())) -Force
+$backup = $null
+$backupTarget = $null
+$installPath = Join-Path $targetDir 'frontend-checklist'
+
+function Cleanup {
+  param([bool]$Failed)
+  if ($Failed -and $backup -and (Test-Path $backup)) {
+    if ($backupTarget -and (Test-Path $backupTarget)) { Remove-Item -Recurse -Force $backupTarget }
+    Move-Item $backup $backupTarget
+    Write-Host "rolled back to previous version" -ForegroundColor Yellow
+  } elseif ($Failed -and $backupTarget) {
+    if (Test-Path $backupTarget) { Remove-Item -Recurse -Force $backupTarget }
+  } elseif ($backup -and (Test-Path $backup)) {
+    Remove-Item -Recurse -Force $backup
+  }
+  if (Test-Path $tmp) { Remove-Item -Recurse -Force $tmp }
+}
+
+function Get-Verified {
+  param([string]$Asset, [string]$Dest)
+  Invoke-WebRequest -UseBasicParsing -Uri "$BaseUrl/$Asset" -OutFile $Dest
+  $sumsPath = Join-Path $tmp 'sums'
+  Invoke-WebRequest -UseBasicParsing -Uri "$BaseUrl/$AssetSums" -OutFile $sumsPath
+  $pattern = '^([0-9a-fA-F]{64})\s+\*?' + [regex]::Escape($Asset) + '\s*$'
+  $line = Select-String -Path $sumsPath -Pattern $pattern | Select-Object -First 1
+  if (-not $line) { throw "checksum not found for $Asset" }
+  $expected = $line.Matches[0].Groups[1].Value.ToLower()
+  $actual   = (Get-FileHash -Algorithm SHA256 -Path $Dest).Hash.ToLower()
+  if ($expected -ne $actual) { throw "checksum mismatch for $Asset" }
+}
+
+function Install-Skill {
+  New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+  $script:backupTarget = $installPath
+  if (Test-Path $installPath) {
+    $script:backup = "$installPath.bak." + [DateTimeOffset]::Now.ToUnixTimeSeconds()
+    Move-Item $installPath $script:backup
+  }
+  $tar = Join-Path $tmp 'skill.tar.gz'
+  Get-Verified -Asset $AssetTar -Dest $tar
+  New-Item -ItemType Directory -Force -Path $installPath | Out-Null
+  tar -xzf $tar -C $installPath
+  if (-not (Test-Path (Join-Path $installPath 'SKILL.md'))) { throw "archive missing SKILL.md" }
+  Write-Host "OK $Tool`: installed to $installPath" -ForegroundColor Green
+}
+
+function Install-Cursor {
+  New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+  $target = Join-Path $targetDir 'frontend-checklist.mdc'
+  $download = Join-Path $tmp 'frontend-checklist.mdc'
+  $script:backupTarget = $target
+  Get-Verified -Asset $AssetCursor -Dest $download
+  if (Test-Path $target) {
+    $script:backup = "$target.bak." + [DateTimeOffset]::Now.ToUnixTimeSeconds()
+    Move-Item $target $script:backup
+  }
+  Move-Item $download $target
+  Write-Host "OK Cursor: rule installed" -ForegroundColor Green
+}
+
+function Install-Codex {
+  New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+  $script:backupTarget = $installPath
+  if (Test-Path $installPath) {
+    $script:backup = "$installPath.bak." + [DateTimeOffset]::Now.ToUnixTimeSeconds()
+    Move-Item $installPath $script:backup
+  }
+  $tar = Join-Path $tmp 'skill.tar.gz'
+  Get-Verified -Asset $AssetTar -Dest $tar
+  New-Item -ItemType Directory -Force -Path $installPath | Out-Null
+  tar -xzf $tar -C $installPath
+  if (-not (Test-Path (Join-Path $installPath 'SKILL.md'))) { throw "archive missing SKILL.md" }
+  if (-not (Test-Path (Join-Path $installPath 'references\checklist.md'))) { throw "archive missing references/checklist.md" }
+
+  $agentsFile = if ($Local) { Join-Path (Get-Location).Path 'AGENTS.md' } else { Join-Path $HOME '.codex\AGENTS.md' }
+  New-Item -ItemType Directory -Force -Path (Split-Path $agentsFile) | Out-Null
+  if (-not (Test-Path $agentsFile)) { New-Item -ItemType File -Path $agentsFile | Out-Null }
+  $content = Get-Content $agentsFile -Raw
+  $content = [regex]::Replace($content, '(?s)<!-- BEGIN frontend-checklist -->.*?<!-- END frontend-checklist -->\r?\n?', '')
+  $block = "`n<!-- BEGIN frontend-checklist -->`n@$installPath\SKILL.md`n<!-- END frontend-checklist -->`n"
+  Set-Content -Path $agentsFile -Value ($content + $block) -NoNewline
+  Write-Host "OK Codex: updated $agentsFile" -ForegroundColor Green
+}
+
+function Uninstall-All {
+  switch ($Tool) {
+    'codex' {
+      $agentsFile = if ($Local) { Join-Path (Get-Location).Path 'AGENTS.md' } else { Join-Path $HOME '.codex\AGENTS.md' }
+      if (Test-Path $agentsFile) {
+        $c = Get-Content $agentsFile -Raw
+        $c = [regex]::Replace($c, '(?s)<!-- BEGIN frontend-checklist -->.*?<!-- END frontend-checklist -->\r?\n?', '')
+        Set-Content -Path $agentsFile -Value $c -NoNewline
+      }
+      if (Test-Path $installPath) { Remove-Item -Recurse -Force $installPath }
+    }
+    'cursor' {
+      $rule = Join-Path $targetDir 'frontend-checklist.mdc'
+      if (Test-Path $rule) { Remove-Item -Force $rule }
+    }
+    default {
+      if (Test-Path $installPath) { Remove-Item -Recurse -Force $installPath }
+    }
+  }
+  Write-Host "OK removed frontend-checklist for $Tool ($scope)" -ForegroundColor Green
+}
+
+try {
+  if ($Uninstall) { Uninstall-All; Cleanup $false; return }
+  Write-Host "-> installing frontend-checklist ($Version) for $Tool ($scope)..."
+  switch ($Tool) {
+    'codex'  { Install-Codex }
+    'cursor' { Install-Cursor }
+    default  { Install-Skill }
+  }
+  Cleanup $false
+  switch ($Tool) {
+    'claude' { Write-Host "提示:重启 Claude Code 后输入 /frontend-checklist 触发。" }
+    'kiro'   { Write-Host "提示:重启 Kiro 后输入 /frontend-checklist 触发。" }
+    'cursor' { Write-Host "提示:在 Cursor 里说 '按前端清单 review' 即可触发。" }
+    'codex'  { Write-Host "提示:Codex 下次会话读取 AGENTS.md,直接说 '按清单 review'。" }
+  }
+} catch {
+  Cleanup $true
+  Write-Error $_
+  exit 1
+}

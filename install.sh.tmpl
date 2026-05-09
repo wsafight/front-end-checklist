@@ -1,0 +1,219 @@
+#!/bin/sh
+# Frontend Checklist Skill installer.
+# Usage:
+#   curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- <tool> [--local] [--uninstall]
+# Tools: claude | kiro | cursor | codex
+# Defaults: claude, global install.
+set -eu
+
+VERSION="__VERSION__"
+REPO="wsafight/front-end-checklist"
+ASSET_TARBALL="frontend-checklist-skill.tar.gz"
+ASSET_CURSOR="frontend-checklist-cursor.mdc"
+ASSET_SUMS="sha256sums.txt"
+BASE_URL="https://github.com/${REPO}/releases/download/${VERSION}"
+
+TOOL="claude"
+SCOPE="global"
+ACTION="install"
+for arg in "$@"; do
+  case "$arg" in
+    claude|kiro|cursor|codex) TOOL="$arg" ;;
+    --local)     SCOPE="local" ;;
+    --global)    SCOPE="global" ;;
+    --uninstall) ACTION="uninstall" ;;
+    -h|--help)
+      cat <<'EOF'
+Frontend Checklist Skill installer.
+Usage:
+  curl -fsSL https://github.com/wsafight/front-end-checklist/releases/latest/download/install.sh | sh -s -- <tool> [--local] [--uninstall]
+Tools:   claude | kiro | cursor | codex
+Default: claude, global install.
+EOF
+      exit 0 ;;
+    *) echo "unknown arg: $arg" >&2; exit 2 ;;
+  esac
+done
+
+say()  { printf '%s\n' "$*"; }
+err()  { printf 'error: %s\n' "$*" >&2; }
+need() { command -v "$1" >/dev/null 2>&1 || { err "missing required command: $1"; exit 1; }; }
+
+need curl
+need tar
+command -v shasum >/dev/null 2>&1 || command -v sha256sum >/dev/null 2>&1 || { err "missing shasum or sha256sum"; exit 1; }
+
+sha256() {
+  if command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1" | awk '{print $1}'
+  else sha256sum "$1" | awk '{print $1}'
+  fi
+}
+
+# Resolve target dir per tool + scope.
+resolve_dir() {
+  case "$TOOL" in
+    claude) base=".claude/skills" ;;
+    kiro)   base=".kiro/skills" ;;
+    cursor) base=".cursor/rules" ;;
+    codex)  base=".frontend-checklist" ;;
+  esac
+  if [ "$SCOPE" = "global" ]; then printf '%s/%s\n' "$HOME" "$base"
+  else printf '%s/%s\n' "$PWD" "$base"
+  fi
+}
+
+TARGET_DIR="$(resolve_dir)"
+
+TMP="$(mktemp -d 2>/dev/null || mktemp -d -t fcs)"
+BACKUP=""
+BACKUP_TARGET=""
+cleanup() {
+  status=$?
+  [ -n "$TMP" ] && rm -rf "$TMP"
+  if [ $status -ne 0 ] && [ -n "$BACKUP" ] && [ -e "$BACKUP" ]; then
+    rm -rf "$BACKUP_TARGET" 2>/dev/null || true
+    mv "$BACKUP" "$BACKUP_TARGET"
+    err "rolled back to previous version"
+  elif [ $status -ne 0 ] && [ -n "$BACKUP_TARGET" ]; then
+    rm -rf "$BACKUP_TARGET" 2>/dev/null || true
+  elif [ -n "$BACKUP" ] && [ -e "$BACKUP" ]; then
+    rm -rf "$BACKUP" 2>/dev/null || true
+  fi
+  exit $status
+}
+trap cleanup EXIT INT TERM
+
+# Download an asset + verify against sha256sums.txt.
+fetch_verified() {
+  asset="$1"; dest="$2"
+  curl -fsSL --retry 3 --retry-delay 1 "${BASE_URL}/${asset}" -o "$dest"
+  curl -fsSL --retry 3 --retry-delay 1 "${BASE_URL}/${ASSET_SUMS}" -o "$TMP/sums"
+  expected=$(awk -v asset="$asset" '$2 == asset { print $1; exit }' "$TMP/sums")
+  [ -n "$expected" ] || { err "checksum not found for $asset"; return 1; }
+  actual=$(sha256 "$dest")
+  if [ "$expected" != "$actual" ]; then
+    err "checksum mismatch for $asset"
+    err "  expected: $expected"
+    err "  actual:   $actual"
+    return 1
+  fi
+}
+
+# --- Codex path: install full skill and merge/remove a marked block in AGENTS.md ---
+codex_install() {
+  INSTALL_PATH="$TARGET_DIR/frontend-checklist"
+  BACKUP_TARGET="$INSTALL_PATH"
+  mkdir -p "$TARGET_DIR"
+  if [ -d "$INSTALL_PATH" ]; then
+    BACKUP="${INSTALL_PATH}.bak.$(date +%s)"
+    mv "$INSTALL_PATH" "$BACKUP"
+  fi
+  fetch_verified "$ASSET_TARBALL" "$TMP/skill.tar.gz"
+  mkdir -p "$INSTALL_PATH"
+  tar -xzf "$TMP/skill.tar.gz" -C "$INSTALL_PATH"
+  [ -f "$INSTALL_PATH/SKILL.md" ] || { err "archive missing SKILL.md"; exit 1; }
+  [ -f "$INSTALL_PATH/references/checklist.md" ] || { err "archive missing references/checklist.md"; exit 1; }
+
+  agents_file="${AGENTS_FILE:-$PWD/AGENTS.md}"
+  [ "$SCOPE" = "global" ] && agents_file="$HOME/.codex/AGENTS.md" && mkdir -p "$HOME/.codex"
+  touch "$agents_file"
+  # Strip any existing block, then append fresh one.
+  tmpf="$TMP/agents.md"
+  awk '
+    /<!-- BEGIN frontend-checklist -->/ { skip=1; next }
+    /<!-- END frontend-checklist -->/   { skip=0; next }
+    !skip { print }
+  ' "$agents_file" > "$tmpf"
+  {
+    cat "$tmpf"
+    printf '\n<!-- BEGIN frontend-checklist -->\n'
+    printf '@%s/SKILL.md\n' "$INSTALL_PATH"
+    printf '<!-- END frontend-checklist -->\n'
+  } > "$agents_file"
+  say "✓ Codex: updated $agents_file"
+}
+
+codex_uninstall() {
+  agents_file="${AGENTS_FILE:-$PWD/AGENTS.md}"
+  [ "$SCOPE" = "global" ] && agents_file="$HOME/.codex/AGENTS.md"
+  if [ -f "$agents_file" ]; then
+    tmpf="$TMP/agents.md"
+    awk '
+      /<!-- BEGIN frontend-checklist -->/ { skip=1; next }
+      /<!-- END frontend-checklist -->/   { skip=0; next }
+      !skip { print }
+    ' "$agents_file" > "$tmpf"
+    mv "$tmpf" "$agents_file"
+  fi
+  rm -rf "$TARGET_DIR/frontend-checklist"
+  rmdir "$TARGET_DIR" 2>/dev/null || true
+  say "✓ Codex: removed marker block and $TARGET_DIR/frontend-checklist"
+}
+
+# --- Cursor path: single .mdc file ---
+cursor_install() {
+  BACKUP_TARGET="$TARGET_DIR/frontend-checklist.mdc"
+  mkdir -p "$TARGET_DIR"
+  fetch_verified "$ASSET_CURSOR" "$TMP/frontend-checklist.mdc"
+  if [ -f "$TARGET_DIR/frontend-checklist.mdc" ]; then
+    BACKUP="$TARGET_DIR/frontend-checklist.mdc.bak.$(date +%s)"
+    mv "$TARGET_DIR/frontend-checklist.mdc" "$BACKUP"
+  fi
+  mv "$TMP/frontend-checklist.mdc" "$TARGET_DIR/frontend-checklist.mdc"
+  say "✓ Cursor: installed rule to $TARGET_DIR/frontend-checklist.mdc"
+}
+
+cursor_uninstall() {
+  rm -f "$TARGET_DIR/frontend-checklist.mdc"
+  # Only remove directory if we created it and it's now empty.
+  rmdir "$TARGET_DIR" 2>/dev/null || true
+  say "✓ Cursor: removed rule file"
+}
+
+# --- Claude / Kiro path: unpack tarball into skills dir ---
+skill_install() {
+  INSTALL_PATH="$TARGET_DIR/frontend-checklist"
+  BACKUP_TARGET="$INSTALL_PATH"
+  mkdir -p "$TARGET_DIR"
+  if [ -d "$INSTALL_PATH" ]; then
+    BACKUP="${INSTALL_PATH}.bak.$(date +%s)"
+    mv "$INSTALL_PATH" "$BACKUP"
+  fi
+  fetch_verified "$ASSET_TARBALL" "$TMP/skill.tar.gz"
+  mkdir -p "$INSTALL_PATH"
+  tar -xzf "$TMP/skill.tar.gz" -C "$INSTALL_PATH"
+  [ -f "$INSTALL_PATH/SKILL.md" ] || { err "archive missing SKILL.md"; exit 1; }
+  say "✓ ${TOOL}: installed to $INSTALL_PATH"
+}
+
+skill_uninstall() {
+  INSTALL_PATH="$TARGET_DIR/frontend-checklist"
+  rm -rf "$INSTALL_PATH"
+  say "✓ ${TOOL}: removed $INSTALL_PATH"
+}
+
+# --- Dispatch ---
+INSTALL_PATH="$TARGET_DIR/frontend-checklist"
+
+if [ "$ACTION" = "uninstall" ]; then
+  case "$TOOL" in
+    codex)  codex_uninstall ;;
+    cursor) cursor_uninstall ;;
+    *)      skill_uninstall ;;
+  esac
+  exit 0
+fi
+
+say "→ installing frontend-checklist ($VERSION) for $TOOL ($SCOPE)..."
+case "$TOOL" in
+  codex)  codex_install ;;
+  cursor) cursor_install ;;
+  *)      skill_install ;;
+esac
+
+case "$TOOL" in
+  claude) say "提示：重启 Claude Code 后输入 /frontend-checklist 或 '按清单 review' 触发。" ;;
+  kiro)   say "提示：重启 Kiro 后输入 /frontend-checklist 或 '按清单 review' 触发。" ;;
+  cursor) say "提示：在 Cursor 里对话时说 '按前端清单 review' 即可触发。" ;;
+  codex)  say "提示：Codex 会在下次会话读取 AGENTS.md，直接说 '按前端清单 review' 触发。" ;;
+esac

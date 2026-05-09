@@ -1,0 +1,81 @@
+name: Release Skill
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=dev-$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate skill
+        run: bash scripts/validate-skill.sh
+
+      - name: Build artifacts
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+
+          # Skill tarball + zip (content only, not the frontend-checklist/ wrapper).
+          tar -czf dist/frontend-checklist-skill.tar.gz -C skills/frontend-checklist .
+          (cd skills/frontend-checklist && zip -rq "$GITHUB_WORKSPACE/dist/frontend-checklist-skill.zip" .)
+
+          # Cursor rule. Codex uses the full skill tarball so references/ stays available.
+          bash scripts/build-cursor-rule.sh > dist/frontend-checklist-cursor.mdc
+
+          # Install scripts with VERSION baked in.
+          sed "s/__VERSION__/${VERSION}/g" install.sh.tmpl  > dist/install.sh
+          sed "s/__VERSION__/${VERSION}/g" install.ps1.tmpl > dist/install.ps1
+          chmod +x dist/install.sh
+
+          # Checksums.
+          (
+            cd dist
+            sha256sum \
+              frontend-checklist-skill.tar.gz \
+              frontend-checklist-skill.zip \
+              frontend-checklist-cursor.mdc \
+              install.sh \
+              install.ps1 > sha256sums.txt
+          )
+          cat dist/sha256sums.txt
+
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-checklist-${{ steps.ver.outputs.version }}
+          path: dist/*
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.version }}
+          name: ${{ steps.ver.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/frontend-checklist-skill.tar.gz
+            dist/frontend-checklist-skill.zip
+            dist/frontend-checklist-cursor.mdc
+            dist/install.sh
+            dist/install.ps1
+            dist/sha256sums.txt
